@@ -1,0 +1,13 @@
+# Copy this file to .mise.local.toml and fill in real values
+# This file is gitignored and should contain your local dev/test credentials
+
+[env]
+DATANEXUS_API_KEY = "your-real-api-key"
+DATANEXUS_BASE_URL = "https://localhost:4000"
+DATANEXUS_SSL_VERIFY = "false"
+DATANEXUS_TEST_PROGRAM_ID = "your-real-program-id"
+DATANEXUS_TEST_MEMBER_ID = "your-real-member-id"
+
+# Required filters for testing (the API requires at least one filter combination)
+DATANEXUS_TEST_BORN_ON = "1980-01-15"
+DATANEXUS_TEST_EMPLOYEE_ID = "EMP123"

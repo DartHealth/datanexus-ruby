@@ -1,0 +1,36 @@
+[tools]
+ruby = "3.3"
+
+[tasks.setup]
+description = "Install dependencies"
+run = "bundle install"
+
+[tasks.test]
+description = "Run all tests"
+run = "bundle exec rspec --exclude-pattern 'spec/integration/**/*'"
+depends = ["setup"]
+
+[tasks."test:all"]
+description = "Run all tests including integration"
+run = "bundle exec rspec"
+depends = ["setup"]
+
+[tasks."test:integration"]
+description = "Run integration tests only"
+run = "bundle exec rspec spec/integration/"
+depends = ["setup"]
+
+[tasks.lint]
+description = "Run rubocop"
+run = "bundle exec rubocop"
+depends = ["setup"]
+
+[tasks.fix]
+description = "Run rubocop with auto-fix"
+run = "bundle exec rubocop -a"
+depends = ["setup"]
+
+[tasks.console]
+description = "Start IRB console with gem loaded"
+run = "bundle exec bin/console"
+depends = ["setup"]

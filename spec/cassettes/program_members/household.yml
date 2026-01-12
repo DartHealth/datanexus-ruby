@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://localhost:4000/api/programs/<PROGRAM_ID>/members/<MEMBER_ID>/household
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - apikey <API_KEY>
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      User-Agent:
+      - data-nexus-ruby/0.1.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '306'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 08 Jan 2026 23:17:56 GMT
+      Server:
+      - Cowboy
+      X-Request-Id:
+      - GIjkqxA5Q2fO4AgAAD0B
+    body:
+      encoding: UTF-8
+      string: '{"data":[{"id":"<MEMBER_ID>","email":"test21@emsanacare.com","enrollments":[{"id":1,"expires_at":null,"enrolled_at":"2025-08-28T15:09:28.840837Z","enrollment_events":[],"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}],"first_name":"Betty
+        Jo","last_name":"Brown","born_on":"<BORN_ON>"}]}'
+  recorded_at: Thu, 08 Jan 2026 23:17:57 GMT
+recorded_with: VCR 6.4.0

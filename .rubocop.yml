@@ -1,0 +1,28 @@
+plugins:
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+# Integration tests have different expectations
+RSpec/DescribeClass:
+  Exclude:
+    - "spec/integration/**/*"
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - "spec/integration/**/*"
+
+RSpec/ExampleLength:
+  Exclude:
+    - "spec/integration/**/*"
+
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - "spec/integration/**/*"
+
+Metrics/ParameterLists:
+  Exclude:
+    - "lib/data_nexus/client.rb"

@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'data_nexus'
+
+# Load environment variables
+api_key = ENV.fetch('DATANEXUS_API_KEY', nil)
+base_url = ENV.fetch('DATANEXUS_BASE_URL', 'https://localhost:4000')
+ssl_verify = ENV.fetch('DATANEXUS_SSL_VERIFY', 'true') == 'true'
+program_id = ENV.fetch('DATANEXUS_TEST_PROGRAM_ID', nil)
+test_born_on = ENV.fetch('DATANEXUS_TEST_BORN_ON', nil)
+test_employee_id = ENV.fetch('DATANEXUS_TEST_EMPLOYEE_ID', nil)
+
+puts 'Testing DataNexus connection...'
+puts "  Base URL: #{base_url}"
+puts "  SSL Verify: #{ssl_verify}"
+puts "  API Key: #{api_key ? "#{api_key[0..5]}..." : 'NOT SET'}"
+puts "  Program ID: #{program_id || 'NOT SET'}"
+puts "  Test born_on: #{test_born_on || 'NOT SET'}"
+puts "  Test employee_id: #{test_employee_id || 'NOT SET'}"
+puts
+
+unless api_key
+  puts 'ERROR: DATANEXUS_API_KEY not set'
+  exit 1
+end
+
+unless program_id
+  puts 'ERROR: DATANEXUS_TEST_PROGRAM_ID not set'
+  exit 1
+end
+
+unless test_born_on && test_employee_id
+  puts 'ERROR: DATANEXUS_TEST_BORN_ON and DATANEXUS_TEST_EMPLOYEE_ID must be set (filters are required)'
+  exit 1
+end
+
+begin
+  puts 'Creating client...'
+  client = DataNexus::Client.new(
+    api_key: api_key,
+    base_url: base_url,
+    ssl_verify: ssl_verify
+  )
+
+  puts "Fetching members from program #{program_id}..."
+  collection = client.programs(program_id).members.list(
+    born_on: test_born_on,
+    employee_id: test_employee_id
+  )
+
+  puts 'Success!'
+  puts "  Members returned: #{collection.size}"
+  puts "  Has more pages: #{collection.next_page?}"
+
+  collection.data.each do |member|
+    puts "  - #{member[:id]}: #{member[:first_name]} #{member[:last_name]}"
+  end
+rescue DataNexus::Error => e
+  puts "DataNexus Error: #{e.class}"
+  puts "  Message: #{e.message}"
+  puts "  Status: #{e.status}" if e.respond_to?(:status)
+  puts "  Response: #{e.response_body}" if e.respond_to?(:response_body)
+  exit 1
+rescue StandardError => e
+  puts "Error: #{e.class}"
+  puts "  Message: #{e.message}"
+  puts '  Backtrace:'
+  e.backtrace.first(10).each { |line| puts "    #{line}" }
+  exit 1
+end
