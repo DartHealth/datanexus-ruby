@@ -12,6 +12,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<API_KEY>') { ENV.fetch('DATANEXUS_API_KEY', 'test-api-key') }
   config.filter_sensitive_data('<PROGRAM_ID>') { ENV.fetch('DATANEXUS_TEST_PROGRAM_ID', 'test-program-id') }
   config.filter_sensitive_data('<MEMBER_ID>') { ENV.fetch('DATANEXUS_TEST_MEMBER_ID', 'test-member-id') }
+  config.filter_sensitive_data('<CONSENT_ID>') { ENV.fetch('DATANEXUS_TEST_CONSENT_ID', 'test-consent-id') }
   config.filter_sensitive_data('<BORN_ON>') { ENV.fetch('DATANEXUS_TEST_BORN_ON', '1970-01-01') }
   config.filter_sensitive_data('<EMPLOYEE_ID>') { ENV.fetch('DATANEXUS_TEST_EMPLOYEE_ID', 'test-employee-id') }
 

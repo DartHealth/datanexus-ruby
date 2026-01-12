@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://localhost:4000/api/members/<MEMBER_ID>/consents/3
+    uri: https://localhost:4000/api/members/<MEMBER_ID>/consents/<CONSENT_ID>
     body:
       encoding: US-ASCII
       string: ''
@@ -25,13 +25,13 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Date:
-      - Mon, 12 Jan 2026 17:28:28 GMT
+      - Mon, 1<CONSENT_ID> Jan <CONSENT_ID>0<CONSENT_ID>6 19:09:18 GMT
       Server:
       - Cowboy
       X-Request-Id:
-      - GIoL60_MDbCwDsAAAAsh
+      - GIoRa81lhLq5b_QAAAKB
     body:
       encoding: UTF-8
       string: ''
-  recorded_at: Mon, 12 Jan 2026 17:28:29 GMT
+  recorded_at: Mon, 12 Jan 2026 19:09:18 GMT
 recorded_with: VCR 6.4.0

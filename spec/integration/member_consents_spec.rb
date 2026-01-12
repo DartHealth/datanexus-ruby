@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Member Consents', :vcr do
+RSpec.describe 'Member Consents', :vcr, order: :defined do
   let(:api_key) { ENV.fetch('DATANEXUS_API_KEY', 'test-api-key') }
   let(:base_url) { ENV.fetch('DATANEXUS_BASE_URL', 'http://localhost:4000') }
   let(:ssl_verify) { ENV.fetch('DATANEXUS_SSL_VERIFY', 'true') == 'true' }
