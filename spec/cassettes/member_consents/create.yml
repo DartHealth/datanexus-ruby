@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://localhost:4000/api/members/<MEMBER_ID>/consents
+    body:
+      encoding: UTF-8
+      string: '{"consent":{"category":"sms","member_response":true,"consent_details":{"sms_phone_number":"+15558675309"},"program_id":"<PROGRAM_ID>"}}'
+    headers:
+      Authorization:
+      - apikey <API_KEY>
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      User-Agent:
+      - data-nexus-ruby/0.1.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '203'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 12 Jan 2026 17:28:27 GMT
+      Location:
+      - "/api/members/<MEMBER_ID>/consents/5"
+      Server:
+      - Cowboy
+      X-Request-Id:
+      - GIoL6w5qVbe2LjcAAAoB
+    body:
+      encoding: UTF-8
+      string: '{"data":{"id":5,"category":"sms","consent_details":{"sms_phone_number":"+15558675309"},"member_response":true,"consented_at":null,"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}}'
+  recorded_at: Mon, 12 Jan 2026 17:28:28 GMT
+recorded_with: VCR 6.4.0

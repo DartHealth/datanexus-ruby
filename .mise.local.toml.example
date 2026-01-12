@@ -7,6 +7,7 @@ DATANEXUS_BASE_URL = "https://localhost:4000"
 DATANEXUS_SSL_VERIFY = "false"
 DATANEXUS_TEST_PROGRAM_ID = "your-real-program-id"
 DATANEXUS_TEST_MEMBER_ID = "your-real-member-id"
+DATANEXUS_TEST_CONSENT_ID = "your-real-consent-id"
 
 # Required filters for testing (the API requires at least one filter combination)
 DATANEXUS_TEST_BORN_ON = "1980-01-15"

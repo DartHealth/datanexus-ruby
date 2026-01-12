@@ -47,6 +47,14 @@ module DataNexus
       request(:patch, path, body)
     end
 
+    # Perform a DELETE request
+    #
+    # @param path [String] The API endpoint path
+    # @return [Hash] Parsed JSON response (empty on 204 No Content)
+    def delete(path)
+      request(:delete, path)
+    end
+
     private
 
     # Build the Faraday connection

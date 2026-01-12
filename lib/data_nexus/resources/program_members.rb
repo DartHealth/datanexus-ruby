@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'member_consents'
+
 module DataNexus
   module Resources
     # Resource for managing program members
@@ -105,6 +107,22 @@ module DataNexus
       def household(member_id)
         response = connection.get("#{base_path}/#{member_id}/household")
         Collection.new(response, resource: self, params: { member_id: member_id })
+      end
+
+      # Access consents for a specific member
+      #
+      # @param member_id [String] The member ID
+      # @return [MemberConsents] The member consents resource
+      #
+      # @example Create a consent
+      #   client.programs("uuid").members.consents("member-id").create(
+      #     consent: { category: "sms", member_response: true, consent_details: {} }
+      #   )
+      #
+      # @example Find a consent
+      #   client.programs("uuid").members.consents("member-id").find(123)
+      def consents(member_id)
+        MemberConsents.new(connection, member_id, program_id)
       end
 
       private

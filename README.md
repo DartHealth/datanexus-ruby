@@ -73,6 +73,42 @@ household = client.programs('program-id').members.household('member-id')
 household.data.each { |member| puts member[:first_name] }
 ```
 
+### Member Consents
+
+#### Create Consent
+
+```ruby
+response = client.programs('program-id').members.consents('member-id').create(
+  consent: {
+    category: 'sms',
+    member_response: true,
+    consent_details: { sms_phone_number: '+15558675309' }
+  }
+)
+# program_id is automatically injected
+```
+
+#### Find Consent
+
+```ruby
+consent = client.programs('program-id').members.consents('member-id').find(123)
+puts consent[:category]
+```
+
+#### Update Consent
+
+```ruby
+response = client.programs('program-id').members.consents('member-id').update(123,
+  consent: { member_response: false }
+)
+```
+
+#### Delete Consent
+
+```ruby
+client.programs('program-id').members.consents('member-id').delete(123)
+```
+
 ## Error Handling
 
 ```ruby
