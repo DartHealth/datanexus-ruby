@@ -10,7 +10,7 @@ RSpec.describe 'Member Consents', :vcr, order: :defined do
 
   describe 'creating a consent' do
     it 'returns the created consent', vcr: { cassette_name: 'member_consents/create' } do
-      response = client.programs(program_id).members.consents(member_id).create(
+      response = client.programs(program_id).members(member_id).consents.create(
         consent: {
           category: 'sms',
           member_response: true,
@@ -25,7 +25,7 @@ RSpec.describe 'Member Consents', :vcr, order: :defined do
     end
 
     it 'auto-injects the program_id', vcr: { cassette_name: 'member_consents/create' } do
-      response = client.programs(program_id).members.consents(member_id).create(
+      response = client.programs(program_id).members(member_id).consents.create(
         consent: {
           category: 'sms',
           member_response: true,
@@ -41,7 +41,7 @@ RSpec.describe 'Member Consents', :vcr, order: :defined do
     let(:consent_id) { 2 }
 
     it 'returns the consent data', vcr: { cassette_name: 'member_consents/find' } do
-      consent = client.programs(program_id).members.consents(member_id).find(consent_id)
+      consent = client.programs(program_id).members(member_id).consents.find(consent_id)
 
       expect(consent).to be_a(Hash)
       expect(consent).to have_key(:id)
@@ -55,7 +55,7 @@ RSpec.describe 'Member Consents', :vcr, order: :defined do
     let(:consent_id) { 2 }
 
     it 'returns the updated consent', vcr: { cassette_name: 'member_consents/update' } do
-      response = client.programs(program_id).members.consents(member_id).update(
+      response = client.programs(program_id).members(member_id).consents.update(
         consent_id,
         consent: { member_response: false }
       )
@@ -69,7 +69,7 @@ RSpec.describe 'Member Consents', :vcr, order: :defined do
     let(:consent_id) { 2 }
 
     it 'returns an empty response', vcr: { cassette_name: 'member_consents/delete' } do
-      response = client.programs(program_id).members.consents(member_id).delete(consent_id)
+      response = client.programs(program_id).members(member_id).consents.delete(consent_id)
 
       expect(response).to eq({})
     end

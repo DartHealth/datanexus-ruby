@@ -2,6 +2,7 @@
 
 require_relative 'configuration'
 require_relative 'connection'
+require_relative 'resources/members'
 require_relative 'resources/programs'
 
 module DataNexus
@@ -16,7 +17,7 @@ module DataNexus
   #
   # @example Access program members
   #   client.programs("program-uuid").members.list
-  #   client.programs("program-uuid").members.find("member-id")
+  #   client.programs("program-uuid").members("member-id").find
   #
   class Client
     # @return [Configuration] The client configuration
@@ -46,6 +47,17 @@ module DataNexus
       validate_configuration!
 
       @connection = Connection.new(@config)
+    end
+
+    # Access top-level member resources
+    #
+    # @return [Resources::Members] A members resource
+    #
+    # @example
+    #   client.members.list
+    #   client.members.find("member-id")
+    def members
+      Resources::Members.new(connection)
     end
 
     # Access program-scoped resources

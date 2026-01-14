@@ -1,0 +1,41 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://localhost:4000/api/members?first_name=Test&last_name=User
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - apikey <API_KEY>
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      User-Agent:
+      - data-nexus-ruby/0.1.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '49'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 13 Jan 2026 21:30:28 GMT
+      Server:
+      - Cowboy
+      X-Request-Id:
+      - GIpntIq3tetFwbwAACUh
+    body:
+      encoding: UTF-8
+      string: '{"data":[],"end_cursor":null,"start_cursor":null}'
+  recorded_at: Tue, 13 Jan 2026 21:30:29 GMT
+recorded_with: VCR 6.4.0

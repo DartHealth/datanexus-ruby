@@ -1,0 +1,37 @@
+---
+http_interactions:
+  - request:
+      method: delete
+      uri: https://localhost:4000/api/members/<MEMBER_ID>/enrollments/<ENROLLMENT_ID>
+      body:
+        encoding: US-ASCII
+        string: ""
+      headers:
+        Authorization:
+          - apikey <API_KEY>
+        Content-Type:
+          - application/json
+        Accept:
+          - application/json
+        User-Agent:
+          - data-nexus-ruby/0.1.0
+        Accept-Encoding:
+          - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+    response:
+      status:
+        code: 204
+        message: No Content
+      headers:
+        Cache-Control:
+          - max-age=0, private, must-revalidate
+        Date:
+          - Wed, 14 Jan 2026 00:36:02 GMT
+        Server:
+          - Cowboy
+        X-Request-Id:
+          - GIpx1O7PjJwQ-akAAALi
+      body:
+        encoding: UTF-8
+        string: ""
+    recorded_at: Wed, 14 Jan 2026 00:36:03 GMT
+recorded_with: VCR 6.4.0
