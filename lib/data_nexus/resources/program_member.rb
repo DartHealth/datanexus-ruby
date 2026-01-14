@@ -81,14 +81,14 @@ module DataNexus
 
       # Get household members for this member
       #
-      # @return [Collection] Collection of household members
+      # @return [Array<Hash>] Array of household member data
       #
       # @example
       #   household = client.programs("uuid").members("member-id").household
-      #   household.data.each { |m| puts "#{m[:first_name]} - #{m[:relationship_type]}" }
+      #   household.each { |m| puts "#{m[:first_name]} - #{m[:relationship_type]}" }
       def household
         response = connection.get("#{base_path}/#{member_id}/household")
-        Collection.new(response, resource: self, params: {})
+        response[:data]
       end
 
       # Access consents for this member

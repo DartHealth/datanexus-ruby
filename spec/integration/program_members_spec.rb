@@ -70,10 +70,9 @@ RSpec.describe 'Program Members', :vcr do
     let(:member_id) { ENV.fetch('DATANEXUS_TEST_MEMBER_ID', 'test-member-id') }
 
     it 'returns household members', vcr: { cassette_name: 'program_members/household' } do
-      collection = client.programs(program_id).members(member_id).household
+      household = client.programs(program_id).members(member_id).household
 
-      expect(collection).to be_a(DataNexus::Collection)
-      expect(collection.data).to be_an(Array)
+      expect(household).to be_an(Array)
     end
   end
 end
