@@ -46,7 +46,7 @@ RSpec.describe 'Program Members', :vcr do
     let(:member_id) { ENV.fetch('DATANEXUS_TEST_MEMBER_ID', 'test-member-id') }
 
     it 'returns the member data', vcr: { cassette_name: 'program_members/find' } do
-      member = client.programs(program_id).members.find(member_id)
+      member = client.programs(program_id).members(member_id).find
 
       expect(member).to be_a(Hash)
       expect(member).to have_key(:id)
@@ -57,8 +57,7 @@ RSpec.describe 'Program Members', :vcr do
     let(:member_id) { ENV.fetch('DATANEXUS_TEST_MEMBER_ID', 'test-member-id') }
 
     it 'returns the updated member', vcr: { cassette_name: 'program_members/update' } do
-      response = client.programs(program_id).members.update(
-        member_id,
+      response = client.programs(program_id).members(member_id).update(
         member: { phone_number: '+15551234567' }
       )
 
@@ -71,10 +70,9 @@ RSpec.describe 'Program Members', :vcr do
     let(:member_id) { ENV.fetch('DATANEXUS_TEST_MEMBER_ID', 'test-member-id') }
 
     it 'returns household members', vcr: { cassette_name: 'program_members/household' } do
-      collection = client.programs(program_id).members.household(member_id)
+      household = client.programs(program_id).members(member_id).household
 
-      expect(collection).to be_a(DataNexus::Collection)
-      expect(collection.data).to be_an(Array)
+      expect(household).to be_an(Array)
     end
   end
 end

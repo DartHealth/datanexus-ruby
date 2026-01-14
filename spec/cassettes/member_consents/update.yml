@@ -1,41 +1,41 @@
 ---
 http_interactions:
-- request:
-    method: patch
-    uri: https://localhost:4000/api/members/<MEMBER_ID>/consents/3
-    body:
-      encoding: UTF-8
-      string: '{"consent":{"member_response":false}}'
-    headers:
-      Authorization:
-      - apikey <API_KEY>
-      Content-Type:
-      - application/json
-      Accept:
-      - application/json
-      User-Agent:
-      - data-nexus-ruby/0.1.0
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Content-Length:
-      - '193'
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Mon, 12 Jan 2026 17:28:28 GMT
-      Server:
-      - Cowboy
-      X-Request-Id:
-      - GIoL6z3Ao6-Odi4AAAsB
-    body:
-      encoding: UTF-8
-      string: '{"data":{"id":3,"category":"privacy","consent_details":{},"member_response":false,"consented_at":"2025-10-08T20:18:10Z","program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}}'
-  recorded_at: Mon, 12 Jan 2026 17:28:28 GMT
+  - request:
+      method: patch
+      uri: https://localhost:4000/api/members/<MEMBER_ID>/consents/2
+      body:
+        encoding: UTF-8
+        string: '{"consent":{"member_response":false}}'
+      headers:
+        Authorization:
+          - apikey <API_KEY>
+        Content-Type:
+          - application/json
+        Accept:
+          - application/json
+        User-Agent:
+          - data-nexus-ruby/0.1.0
+        Accept-Encoding:
+          - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Cache-Control:
+          - max-age=0, private, must-revalidate
+        Content-Length:
+          - "189"
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Mon, 12 Jan 2026 19:09:17 GMT
+        Server:
+          - Cowboy
+        X-Request-Id:
+          - GIoRa7wA5nO5Vm0AAAIh
+      body:
+        encoding: UTF-8
+        string: '{"data":{"id":2,"category":"tos","consent_details":{},"member_response":false,"consented_at":"2025-10-08T20:18:09Z","program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}}'
+    recorded_at: Mon, 12 Jan 2026 19:09:18 GMT
 recorded_with: VCR 6.4.0

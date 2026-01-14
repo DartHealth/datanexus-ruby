@@ -1,11 +1,11 @@
 ---
 http_interactions:
   - request:
-      method: post
-      uri: https://localhost:4000/api/members/<MEMBER_ID>/consents
+      method: patch
+      uri: https://localhost:4000/api/members/<MEMBER_ID>/enrollments/<ENROLLMENT_ID>
       body:
         encoding: UTF-8
-        string: '{"consent":{"category":"sms","member_response":true,"consent_details":{"sms_phone_number":"+15558675309"},"program_id":"<PROGRAM_ID>"}}'
+        string: '{"enrollment":{"expires_at":"2026-01-01T00:00:00Z"}}'
       headers:
         Authorization:
           - apikey <API_KEY>
@@ -19,25 +19,23 @@ http_interactions:
           - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
     response:
       status:
-        code: 201
-        message: Created
+        code: 200
+        message: OK
       headers:
         Cache-Control:
           - max-age=0, private, must-revalidate
         Content-Length:
-          - "203"
+          - "192"
         Content-Type:
           - application/json; charset=utf-8
         Date:
-          - Mon, 12 Jan 2026 19:09:17 GMT
-        Location:
-          - "/api/members/<MEMBER_ID>/consents/7"
+          - Wed, 14 Jan 2026 00:36:02 GMT
         Server:
           - Cowboy
         X-Request-Id:
-          - GIoRa4qd7Ymp018AAAYk
+          - GIpx1Nz2UjqdE_MAACmB
       body:
         encoding: UTF-8
-        string: '{"data":{"id":7,"category":"sms","consent_details":{"sms_phone_number":"+15558675309"},"member_response":true,"consented_at":null,"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}}'
-    recorded_at: Mon, 12 Jan 2026 19:09:17 GMT
+        string: '{"data":{"id":"<ENROLLMENT_ID>","expires_at":"2026-01-01T00:00:00Z","enrolled_at":"2025-08-28T15:09:28.840837Z","enrollment_events":[],"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}}'
+    recorded_at: Wed, 14 Jan 2026 00:36:02 GMT
 recorded_with: VCR 6.4.0

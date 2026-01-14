@@ -8,7 +8,7 @@ module DataNexus
     # consents for a specific member.
     #
     # @example Create a consent
-    #   client.programs("uuid").members.consents("member-id").create(
+    #   client.programs("uuid").members("member-id").consents.create(
     #     consent: {
     #       category: "sms",
     #       member_response: true,
@@ -17,15 +17,15 @@ module DataNexus
     #   )
     #
     # @example Find a consent
-    #   consent = client.programs("uuid").members.consents("member-id").find(123)
+    #   consent = client.programs("uuid").members("member-id").consents.find(123)
     #
     # @example Update a consent
-    #   client.programs("uuid").members.consents("member-id").update(123,
+    #   client.programs("uuid").members("member-id").consents.update(123,
     #     consent: { member_response: false }
     #   )
     #
     # @example Delete a consent
-    #   client.programs("uuid").members.consents("member-id").delete(123)
+    #   client.programs("uuid").members("member-id").consents.delete(123)
     #
     class MemberConsents
       # @return [Connection] The HTTP connection
@@ -58,7 +58,7 @@ module DataNexus
       # @return [Hash] Response containing :data with the created consent
       #
       # @example
-      #   response = client.programs("uuid").members.consents("member-id").create(
+      #   response = client.programs("uuid").members("member-id").consents.create(
       #     consent: {
       #       category: "sms",
       #       member_response: true,
@@ -78,7 +78,7 @@ module DataNexus
       # @return [Hash] The consent data
       #
       # @example
-      #   consent = client.programs("uuid").members.consents("member-id").find(123)
+      #   consent = client.programs("uuid").members("member-id").consents.find(123)
       #   puts consent[:category]
       def find(consent_id)
         response = connection.get("#{base_path}/#{consent_id}")
@@ -92,7 +92,7 @@ module DataNexus
       # @return [Hash] Response containing :data with the updated consent
       #
       # @example
-      #   response = client.programs("uuid").members.consents("member-id").update(123,
+      #   response = client.programs("uuid").members("member-id").consents.update(123,
       #     consent: { member_response: false }
       #   )
       #   updated_consent = response[:data]
@@ -107,7 +107,7 @@ module DataNexus
       # @return [Hash] Empty hash on success (204 No Content)
       #
       # @example
-      #   client.programs("uuid").members.consents("member-id").delete(123)
+      #   client.programs("uuid").members("member-id").consents.delete(123)
       def delete(consent_id)
         connection.delete("#{base_path}/#{consent_id}")
       end

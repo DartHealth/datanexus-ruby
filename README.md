@@ -4,6 +4,14 @@ Ruby client for the DataNexus API.
 
 ## Installation
 
+Install from GitHub (before gem is published):
+
+```ruby
+gem 'data_nexus', git: 'https://github.com/DartHealth/datanexus-ruby.git', tag: 'v0.1.0'
+```
+
+Or from RubyGems (once published):
+
 ```ruby
 gem 'data_nexus'
 ```
@@ -16,6 +24,8 @@ client = DataNexus::Client.new(
   base_url: 'https://api.datanexus.com'  # optional
 )
 ```
+
+## Program Members
 
 ### List Members
 
@@ -54,14 +64,14 @@ end
 ### Find Member
 
 ```ruby
-member = client.programs('program-id').members.find('member-id')
+member = client.programs('program-id').members('member-id').find
 puts member[:first_name]
 ```
 
 ### Update Member
 
 ```ruby
-response = client.programs('program-id').members.update('member-id',
+response = client.programs('program-id').members('member-id').update(
   member: { phone_number: '+15551234567' }
 )
 ```
@@ -69,8 +79,8 @@ response = client.programs('program-id').members.update('member-id',
 ### Household Members
 
 ```ruby
-household = client.programs('program-id').members.household('member-id')
-household.data.each { |member| puts member[:first_name] }
+household = client.programs('program-id').members('member-id').household
+household.each { |member| puts member[:first_name] }
 ```
 
 ### Member Consents
@@ -78,7 +88,7 @@ household.data.each { |member| puts member[:first_name] }
 #### Create Consent
 
 ```ruby
-response = client.programs('program-id').members.consents('member-id').create(
+response = client.programs('program-id').members('member-id').consents.create(
   consent: {
     category: 'sms',
     member_response: true,
@@ -91,14 +101,14 @@ response = client.programs('program-id').members.consents('member-id').create(
 #### Find Consent
 
 ```ruby
-consent = client.programs('program-id').members.consents('member-id').find(123)
+consent = client.programs('program-id').members('member-id').consents.find(123)
 puts consent[:category]
 ```
 
 #### Update Consent
 
 ```ruby
-response = client.programs('program-id').members.consents('member-id').update(123,
+response = client.programs('program-id').members('member-id').consents.update(123,
   consent: { member_response: false }
 )
 ```
@@ -106,14 +116,87 @@ response = client.programs('program-id').members.consents('member-id').update(12
 #### Delete Consent
 
 ```ruby
-client.programs('program-id').members.consents('member-id').delete(123)
+client.programs('program-id').members('member-id').consents.delete(123)
+```
+
+### Member Enrollments
+
+#### Create Enrollment
+
+```ruby
+response = client.programs('program-id').members('member-id').enrollments.create(
+  enrollment: {
+    enrolled_at: '2024-01-01T00:00:00Z',
+    expires_at: '2025-01-01T00:00:00Z'
+  }
+)
+# program_id is automatically injected
+```
+
+#### Find Enrollment
+
+```ruby
+enrollment = client.programs('program-id').members('member-id').enrollments.find(123)
+puts enrollment[:enrolled_at]
+```
+
+#### Update Enrollment
+
+```ruby
+response = client.programs('program-id').members('member-id').enrollments.update(123,
+  enrollment: { expires_at: '2026-01-01T00:00:00Z' }
+)
+```
+
+#### Delete Enrollment
+
+```ruby
+client.programs('program-id').members('member-id').enrollments.delete(123)
+```
+
+## Top-Level Members
+
+You can also access members without a program scope:
+
+### List Members
+
+```ruby
+collection = client.members.list(
+  first_name: 'George',
+  last_name: 'Washington',
+  born_on: '1976-07-04'
+)
+
+# Filter by program eligibility
+collection = client.members.list(program_id: 'program-uuid')
+
+# Filter by update time
+collection = client.members.list(updated_since: '2024-01-01T00:00:00Z')
+
+# Pagination
+collection = client.members.list(first: 50, after: 'cursor')
+```
+
+### Find Member
+
+```ruby
+member = client.members.find('member-id')
+puts member[:first_name]
+```
+
+### Update Member
+
+```ruby
+response = client.members.update('member-id',
+  member: { phone_number: '+15551234567' }
+)
 ```
 
 ## Error Handling
 
 ```ruby
 begin
-  client.programs('id').members.find('id')
+  client.programs('id').members('id').find
 rescue DataNexus::AuthenticationError
   # 401
 rescue DataNexus::NotFoundError
@@ -129,11 +212,12 @@ end
 
 ## Development
 
-```
+```bash
 cp .mise.local.toml.example .mise.local.toml
 # Edit .mise.local.toml with your test credentials
-mise run test
-mise run lint
+bundle install
+bundle exec rspec
+bundle exec rubocop
 ```
 
 ## License

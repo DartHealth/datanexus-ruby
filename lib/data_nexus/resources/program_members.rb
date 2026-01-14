@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'member_consents'
-
 module DataNexus
   module Resources
-    # Resource for managing program members
+    # Resource for listing program members
     #
-    # Provides methods for listing, finding, updating, and retrieving
-    # household information for members within a specific program.
+    # Provides methods for listing and searching members within a specific program.
+    # For operations on a specific member, use `programs("uuid").members("member-id")`.
     #
     # @example List members with filters
     #   client.programs("uuid").members.list(
@@ -65,64 +63,6 @@ module DataNexus
         query_params = params.slice(*allowed_params).compact
         response = connection.get(base_path, query_params)
         Collection.new(response, resource: self, params: query_params)
-      end
-
-      # Find a specific member by ID
-      #
-      # @param member_id [String] The member ID
-      # @return [Hash] The member data
-      #
-      # @example
-      #   member = client.programs("uuid").members.find("member-id")
-      #   puts member[:first_name]
-      def find(member_id)
-        response = connection.get("#{base_path}/#{member_id}")
-        response[:data]
-      end
-
-      # Update a member's attributes
-      #
-      # @param member_id [String] The member ID
-      # @param member [Hash] The member attributes to update
-      # @return [Hash] Response containing :data with the updated member
-      #
-      # @example
-      #   response = client.programs("uuid").members.update("member-id",
-      #     member: { first_name: "George", last_name: "Washington" }
-      #   )
-      #   updated_member = response[:data]
-      def update(member_id, member:)
-        body = { member: member }
-        connection.patch("#{base_path}/#{member_id}", body)
-      end
-
-      # Get household members for a specific member
-      #
-      # @param member_id [String] The member ID
-      # @return [Collection] Paginated collection of household members
-      #
-      # @example
-      #   household = client.programs("uuid").members.household("member-id")
-      #   household.data.each { |m| puts "#{m[:first_name]} - #{m[:relationship_type]}" }
-      def household(member_id)
-        response = connection.get("#{base_path}/#{member_id}/household")
-        Collection.new(response, resource: self, params: { member_id: member_id })
-      end
-
-      # Access consents for a specific member
-      #
-      # @param member_id [String] The member ID
-      # @return [MemberConsents] The member consents resource
-      #
-      # @example Create a consent
-      #   client.programs("uuid").members.consents("member-id").create(
-      #     consent: { category: "sms", member_response: true, consent_details: {} }
-      #   )
-      #
-      # @example Find a consent
-      #   client.programs("uuid").members.consents("member-id").find(123)
-      def consents(member_id)
-        MemberConsents.new(connection, member_id, program_id)
       end
 
       private
