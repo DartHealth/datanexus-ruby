@@ -75,4 +75,59 @@ RSpec.describe 'Program Members', :vcr do
       expect(household).to be_an(Array)
     end
   end
+
+  describe 'searching members' do
+    let(:test_first_name) { ENV.fetch('DATANEXUS_TEST_FIRST_NAME', 'Test') }
+    let(:test_last_name) { ENV.fetch('DATANEXUS_TEST_LAST_NAME', 'User') }
+
+    it 'returns members matching employee_id and DOB', vcr: { cassette_name: 'program_members/search_employee_id' } do
+      result = client.programs(program_id).search_members(
+        born_on: test_born_on,
+        employee_id: test_employee_id
+      )
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_an(Array)
+      expect(result).to have_key(:more_results)
+    end
+
+    it 'returns members matching name and DOB', vcr: { cassette_name: 'program_members/search_name' } do
+      result = client.programs(program_id).search_members(
+        born_on: test_born_on,
+        first_name: test_first_name,
+        last_name: test_last_name
+      )
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_an(Array)
+      expect(result).to have_key(:more_results)
+    end
+
+    it 'raises ArgumentError for invalid parameter combinations' do
+      expect {
+        client.programs(program_id).search_members(
+          born_on: test_born_on,
+          first_name: test_first_name
+        )
+      }.to raise_error(ArgumentError, /Invalid search parameter combination/)
+    end
+
+    it 'raises ArgumentError when mixing prefix and exact name params' do
+      expect {
+        client.programs(program_id).search_members(
+          born_on: test_born_on,
+          first_name: test_first_name,
+          last_name_prefix: 'Was'
+        )
+      }.to raise_error(ArgumentError, /Invalid search parameter combination/)
+    end
+
+    it 'raises ArgumentError when born_on is missing' do
+      expect {
+        client.programs(program_id).search_members(
+          employee_id: test_employee_id
+        )
+      }.to raise_error(ArgumentError, /Invalid search parameter combination/)
+    end
+  end
 end
