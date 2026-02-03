@@ -113,30 +113,30 @@ RSpec.describe 'Program Members', :vcr do
     end
 
     it 'raises ArgumentError for invalid parameter combinations' do
-      expect {
+      expect do
         client.programs(program_id).search_members(
           born_on: test_born_on,
           first_name: 'George'
         )
-      }.to raise_error(ArgumentError, /Invalid search parameter combination/)
+      end.to raise_error(ArgumentError, /Invalid search parameter combination/)
     end
 
     it 'raises ArgumentError when mixing prefix and exact name params' do
-      expect {
+      expect do
         client.programs(program_id).search_members(
           born_on: test_born_on,
           first_name: 'George',
           last_name_prefix: 'Was'
         )
-      }.to raise_error(ArgumentError, /Invalid search parameter combination/)
+      end.to raise_error(ArgumentError, /Invalid search parameter combination/)
     end
 
     it 'raises ArgumentError when born_on is missing' do
-      expect {
+      expect do
         client.programs(program_id).search_members(
           employee_id: test_employee_id
         )
-      }.to raise_error(ArgumentError, /Invalid search parameter combination/)
+      end.to raise_error(ArgumentError, /Invalid search parameter combination/)
     end
   end
 end
