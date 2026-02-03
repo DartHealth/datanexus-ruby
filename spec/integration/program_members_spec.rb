@@ -77,9 +77,6 @@ RSpec.describe 'Program Members', :vcr do
   end
 
   describe 'searching members' do
-    let(:test_first_name) { ENV.fetch('DATANEXUS_TEST_FIRST_NAME', 'Test') }
-    let(:test_last_name) { ENV.fetch('DATANEXUS_TEST_LAST_NAME', 'User') }
-
     it 'returns members matching employee_id and DOB', vcr: { cassette_name: 'program_members/search_employee_id' } do
       result = client.programs(program_id).search_members(
         born_on: test_born_on,
@@ -94,8 +91,8 @@ RSpec.describe 'Program Members', :vcr do
     it 'returns members matching name and DOB', vcr: { cassette_name: 'program_members/search_name' } do
       result = client.programs(program_id).search_members(
         born_on: test_born_on,
-        first_name: test_first_name,
-        last_name: test_last_name
+        first_name: 'Betty Jo',
+        last_name: 'Brown'
       )
 
       expect(result).to be_a(Hash)
@@ -106,8 +103,8 @@ RSpec.describe 'Program Members', :vcr do
     it 'returns members matching name prefix and DOB', vcr: { cassette_name: 'program_members/search_prefix' } do
       result = client.programs(program_id).search_members(
         born_on: test_born_on,
-        first_name_prefix: test_first_name[0, 3],
-        last_name_prefix: test_last_name[0, 3]
+        first_name_prefix: 'Bet',
+        last_name_prefix: 'Bro'
       )
 
       expect(result).to be_a(Hash)
@@ -119,7 +116,7 @@ RSpec.describe 'Program Members', :vcr do
       expect {
         client.programs(program_id).search_members(
           born_on: test_born_on,
-          first_name: test_first_name
+          first_name: 'George'
         )
       }.to raise_error(ArgumentError, /Invalid search parameter combination/)
     end
@@ -128,7 +125,7 @@ RSpec.describe 'Program Members', :vcr do
       expect {
         client.programs(program_id).search_members(
           born_on: test_born_on,
-          first_name: test_first_name,
+          first_name: 'George',
           last_name_prefix: 'Was'
         )
       }.to raise_error(ArgumentError, /Invalid search parameter combination/)
