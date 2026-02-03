@@ -103,6 +103,18 @@ RSpec.describe 'Program Members', :vcr do
       expect(result).to have_key(:more_results)
     end
 
+    it 'returns members matching name prefix and DOB', vcr: { cassette_name: 'program_members/search_prefix' } do
+      result = client.programs(program_id).search_members(
+        born_on: test_born_on,
+        first_name_prefix: test_first_name[0, 3],
+        last_name_prefix: test_last_name[0, 3]
+      )
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_an(Array)
+      expect(result).to have_key(:more_results)
+    end
+
     it 'raises ArgumentError for invalid parameter combinations' do
       expect {
         client.programs(program_id).search_members(
