@@ -20,6 +20,7 @@ VCR.configure do |config|
   # Match requests on method and path only (ignore query params for flexibility)
   config.default_cassette_options = {
     record: :once,
-    match_requests_on: %i[method path]
+    match_requests_on: %i[method path],
+    allow_playback_repeats: true
   }
 end
