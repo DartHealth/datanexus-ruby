@@ -6,13 +6,13 @@ module DataNexus
   # @example Configure the client globally
   #   DataNexus.configure do |config|
   #     config.api_key = "your_api_key"
-  #     config.base_url = "https://api.datanexus.com"
+  #     config.base_url = "https://datanexus.darthealth.com"
   #   end
   #
   # @example Create a configuration instance
   #   config = DataNexus::Configuration.new(
   #     api_key: "your_api_key",
-  #     base_url: "https://api.datanexus.com"
+  #     base_url: "https://datanexus.darthealth.com"
   #   )
   #
   class Configuration
@@ -32,7 +32,7 @@ module DataNexus
     attr_accessor :ssl_verify
 
     # Default base URL for the DataNexus API
-    DEFAULT_BASE_URL = 'https://api.datanexus.com'
+    DEFAULT_BASE_URL = 'https://datanexus.darthealth.com'
 
     # Default request timeout in seconds
     DEFAULT_TIMEOUT = 30
