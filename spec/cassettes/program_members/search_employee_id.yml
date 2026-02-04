@@ -1,0 +1,53 @@
+---
+http_interactions:
+  - request:
+      method: post
+      uri: https://localhost:4000/api/programs/<PROGRAM_ID>/members/search
+      body:
+        encoding: UTF-8
+        string: '{"born_on":"<BORN_ON>","employee_id":"<EMPLOYEE_ID>"}'
+      headers:
+        Authorization:
+          - apikey <API_KEY>
+        Content-Type:
+          - application/json
+        Accept:
+          - application/json
+        User-Agent:
+          - data-nexus-ruby/0.1.0
+        Accept-Encoding:
+          - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Cache-Control:
+          - max-age=0, private, must-revalidate
+        Content-Length:
+          - "5240"
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Tue, 03 Feb 2026 20:50:32 GMT
+        Server:
+          - Cowboy
+        X-Request-Id:
+          - GJDXtohbavv3IpEAABpi
+      body:
+        encoding: UTF-8
+        string:
+          '{"data":[{"id":"<MEMBER_ID>","state":"CO","email":"test21@emsanacare.com","option_id":null,"gender":"female","enrollments":[{"id":2,"expires_at":"2025-01-01T00:00:00Z","enrolled_at":"2024-01-01T00:00:00.000000Z","enrollment_events":[],"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}],"consents":[{"id":5,"category":"sms","consent_details":{"sms_phone_number":"+15558675309"},"member_response":true,"consented_at":null,"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"},{"id":6,"category":"sms","consent_details":{"sms_phone_number":"+15558675309"},"member_response":true,"consented_at":null,"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"},{"id":7,"category":"sms","consent_details":{"sms_phone_number":"+15558675309"},"member_response":true,"consented_at":null,"program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"},{"id":1,"category":"sms","consent_details":{},"member_response":true,"consented_at":"2025-10-08T20:18:08Z","program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"},{"id":4,"category":"hipaa","consent_details":{},"member_response":true,"consented_at":"2025-10-08T20:18:10Z","program_id":"<PROGRAM_ID>","member_id":"<MEMBER_ID>"}],"first_name":"Betty
+          Jo","middle_name":"","last_name":"Brown","born_on":"<BORN_ON>","street_address_1":"401
+          Shady Holw","street_address_2":null,"city":"Nederland","postal_code":"80466","phone_number":"+15551234567","eligibility_start_on":"2024-01-01","eligibility_end_on":null,"sponsor_member_identifier":"878787871","soda_sponsor_id":null,"employee_id":"<EMPLOYEE_ID>","health_plan_coverage_tier":"You
+          Only","health_plan_description":"Aetna, Inc.","emails":[{"type":"personal","value":"test21@emsanacare.com"},{"type":"primary_member","value":null}],"work_email":null,"health_plan_identifier":"878787871","parent_sponsor_member_identifier":"878787871","relationship_type":"PP","insurance_identifiers":[]},{"id":"0mw7m","state":"CO","email":"test21@emsanacare.com","option_id":null,"gender":"female","enrollments":[],"consents":[],"first_name":"Olivia","middle_name":"","last_name":"O''Bannon","born_on":"<BORN_ON>","street_address_1":"401
+          Shady Holw","street_address_2":null,"city":"Nederland","postal_code":"80466","phone_number":null,"eligibility_start_on":"2024-01-01","eligibility_end_on":null,"sponsor_member_identifier":"178787874","soda_sponsor_id":null,"employee_id":"<EMPLOYEE_ID>","health_plan_coverage_tier":"You
+          Only","health_plan_description":"Aetna, Inc.","emails":[{"type":"personal","value":"test21@emsanacare.com"},{"type":"primary_member","value":null}],"work_email":null,"health_plan_identifier":"178787874","parent_sponsor_member_identifier":"178787874","relationship_type":"PP","insurance_identifiers":[]},{"id":"jmjXE","state":"CO","email":"test21@emsanacare.com","option_id":null,"gender":"female","enrollments":[],"consents":[],"first_name":"Xavier","middle_name":"","last_name":"Xanadu","born_on":"<BORN_ON>","street_address_1":"401
+          Shady Holw","street_address_2":null,"city":"Nederland","postal_code":"80466","phone_number":null,"eligibility_start_on":"2024-01-01","eligibility_end_on":null,"sponsor_member_identifier":"578787874","soda_sponsor_id":null,"employee_id":"<EMPLOYEE_ID>","health_plan_coverage_tier":"You
+          Only","health_plan_description":"Aetna, Inc.","emails":[{"type":"personal","value":"test21@emsanacare.com"},{"type":"primary_member","value":null}],"work_email":null,"health_plan_identifier":"578787874","parent_sponsor_member_identifier":"578787874","relationship_type":"PP","insurance_identifiers":[]},{"id":"2rZd3","state":"CO","email":"test21@emsanacare.com","option_id":null,"gender":"female","enrollments":[],"consents":[],"first_name":"Grace","middle_name":"","last_name":"Gammon","born_on":"<BORN_ON>","street_address_1":"401
+          Shady Holw","street_address_2":null,"city":"Nederland","postal_code":"80466","phone_number":null,"eligibility_start_on":"2024-01-01","eligibility_end_on":null,"sponsor_member_identifier":"278787874","soda_sponsor_id":null,"employee_id":"<EMPLOYEE_ID>","health_plan_coverage_tier":"You
+          Only","health_plan_description":"Aetna, Inc.","emails":[{"type":"personal","value":"test21@emsanacare.com"},{"type":"primary_member","value":null}],"work_email":null,"health_plan_identifier":"278787874","parent_sponsor_member_identifier":"278787874","relationship_type":"PP","insurance_identifiers":[]},{"id":"3WvME","state":"CO","email":"test21@emsanacare.com","option_id":null,"gender":"female","enrollments":[],"consents":[],"first_name":"Percy","middle_name":"","last_name":"Price","born_on":"<BORN_ON>","street_address_1":"401
+          Shady Holw","street_address_2":null,"city":"Nederland","postal_code":"80466","phone_number":null,"eligibility_start_on":"2024-01-01","eligibility_end_on":null,"sponsor_member_identifier":"378787874","soda_sponsor_id":null,"employee_id":"<EMPLOYEE_ID>","health_plan_coverage_tier":"You
+          Only","health_plan_description":"Aetna, Inc.","emails":[{"type":"personal","value":"test21@emsanacare.com"},{"type":"primary_member","value":null}],"work_email":null,"health_plan_identifier":"378787874","parent_sponsor_member_identifier":"378787874","relationship_type":"PP","insurance_identifiers":[]}],"more_results":false}'
+    recorded_at: Tue, 03 Feb 2026 20:50:32 GMT
+recorded_with: VCR 6.4.0

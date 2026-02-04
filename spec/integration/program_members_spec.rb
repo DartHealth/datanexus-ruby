@@ -75,4 +75,68 @@ RSpec.describe 'Program Members', :vcr do
       expect(household).to be_an(Array)
     end
   end
+
+  describe 'searching members' do
+    it 'returns members matching employee_id and DOB', vcr: { cassette_name: 'program_members/search_employee_id' } do
+      result = client.programs(program_id).search_members(
+        born_on: test_born_on,
+        employee_id: test_employee_id
+      )
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_an(Array)
+      expect(result).to have_key(:more_results)
+    end
+
+    it 'returns members matching name and DOB', vcr: { cassette_name: 'program_members/search_name' } do
+      result = client.programs(program_id).search_members(
+        born_on: test_born_on,
+        first_name: 'Betty Jo',
+        last_name: 'Brown'
+      )
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_an(Array)
+      expect(result).to have_key(:more_results)
+    end
+
+    it 'returns members matching name prefix and DOB', vcr: { cassette_name: 'program_members/search_prefix' } do
+      result = client.programs(program_id).search_members(
+        born_on: test_born_on,
+        first_name_prefix: 'Bet',
+        last_name_prefix: 'Bro'
+      )
+
+      expect(result).to be_a(Hash)
+      expect(result[:data]).to be_an(Array)
+      expect(result).to have_key(:more_results)
+    end
+
+    it 'raises ArgumentError for invalid parameter combinations' do
+      expect do
+        client.programs(program_id).search_members(
+          born_on: test_born_on,
+          first_name: 'George'
+        )
+      end.to raise_error(ArgumentError, /Invalid search parameter combination/)
+    end
+
+    it 'raises ArgumentError when mixing prefix and exact name params' do
+      expect do
+        client.programs(program_id).search_members(
+          born_on: test_born_on,
+          first_name: 'George',
+          last_name_prefix: 'Was'
+        )
+      end.to raise_error(ArgumentError, /Invalid search parameter combination/)
+    end
+
+    it 'raises ArgumentError when born_on is missing' do
+      expect do
+        client.programs(program_id).search_members(
+          employee_id: test_employee_id
+        )
+      end.to raise_error(ArgumentError, /Invalid search parameter combination/)
+    end
+  end
 end

@@ -45,6 +45,49 @@ collection.data.each do |member|
 end
 ```
 
+### Search Members
+
+Search for members within a program. Returns a bounded result set (max 10 results) with a `more_results` flag indicating if additional matches exist.
+
+Valid parameter combinations:
+- `born_on` + `employee_id`
+- `born_on` + `first_name` + `last_name`
+- `born_on` + `first_name` + `last_name` + `employee_id`
+- `born_on` + `first_name_prefix` + `last_name_prefix`
+- `born_on` + `first_name_prefix` + `last_name_prefix` + `employee_id`
+
+```ruby
+# Search by employee ID and DOB
+result = client.programs('program-id').search_members(
+  born_on: '1980-01-15',
+  employee_id: 'EMP123'
+)
+
+result[:data].each do |member|
+  puts "#{member[:first_name]} #{member[:last_name]}"
+end
+
+puts "More results available" if result[:more_results]
+
+# Search by name and DOB
+result = client.programs('program-id').search_members(
+  born_on: '1980-01-15',
+  first_name: 'George',
+  last_name: 'Washington'
+)
+
+# Search by name prefix and DOB
+result = client.programs('program-id').search_members(
+  born_on: '1980-01-15',
+  first_name_prefix: 'G',
+  last_name_prefix: 'Was'
+)
+```
+
+Note: Unlike `list`, `search_members` does not support pagination. It returns up to 10 results with a `more_results` boolean. An `ArgumentError` will be raised if an invalid parameter combination is provided.
+
+Note: Depending on your API key, `search_members` may be the only method you have access to. Contact your DataNexus representative for more information about your API key's permissions.
+
 ### Pagination
 
 ```ruby

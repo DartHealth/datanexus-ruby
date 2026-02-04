@@ -19,7 +19,18 @@ module DataNexus
     #   client.programs("program-uuid").members("member-id").consents.create(...)
     #   client.programs("program-uuid").members("member-id").enrollments.create(...)
     #
+    # @example Search for members
+    #   client.programs("program-uuid").search_members(born_on: "1976-07-04", employee_id: "ABC123")
+    #
     class Programs
+      VALID_SEARCH_COMBINATIONS = [
+        %i[born_on first_name last_name employee_id],
+        %i[born_on first_name last_name],
+        %i[born_on first_name_prefix last_name_prefix employee_id],
+        %i[born_on first_name_prefix last_name_prefix],
+        %i[born_on employee_id]
+      ].freeze
+
       # @return [Connection] The HTTP connection
       attr_reader :connection
 
@@ -64,6 +75,71 @@ module DataNexus
         else
           ProgramMembers.new(connection, program_id)
         end
+      end
+
+      # Search for members within this program
+      #
+      # Returns a bounded result set (max 10 results). Use `more_results` to
+      # determine if additional matches exist beyond what was returned.
+      #
+      # Valid parameter combinations:
+      # - born_on, first_name, last_name, employee_id
+      # - born_on, first_name, last_name
+      # - born_on, first_name_prefix, last_name_prefix, employee_id
+      # - born_on, first_name_prefix, last_name_prefix
+      # - born_on, employee_id
+      #
+      # @param born_on [String] Date of birth (YYYY-MM-DD) - required for all searches
+      # @param first_name [String, nil] Exact first name match
+      # @param first_name_prefix [String, nil] First name prefix (min 1 char)
+      # @param last_name [String, nil] Exact last name match
+      # @param last_name_prefix [String, nil] Last name prefix (min 3 chars)
+      # @param employee_id [String, nil] Employee ID
+      #
+      # @return [Hash] Response with :data (Array) and :more_results (Boolean)
+      #
+      # @raise [ArgumentError] If params don't match a valid search combination
+      #
+      # @example Search by name and DOB
+      #   client.programs("uuid").search_members(
+      #     born_on: "1976-07-04",
+      #     first_name: "george",
+      #     last_name: "washington"
+      #   )
+      #
+      # @example Search by prefix and DOB
+      #   client.programs("uuid").search_members(
+      #     born_on: "1976-07-04",
+      #     first_name_prefix: "g",
+      #     last_name_prefix: "was"
+      #   )
+      #
+      # @example Search by employee ID and DOB
+      #   client.programs("uuid").search_members(
+      #     born_on: "1976-07-04",
+      #     employee_id: "ABC1234"
+      #   )
+      def search_members(**params)
+        validate_search_params!(params)
+
+        connection.post("/api/programs/#{program_id}/members/search", params)
+      end
+
+      private
+
+      def validate_search_params!(params)
+        provided_keys = params.keys.sort
+
+        return if VALID_SEARCH_COMBINATIONS.any? { |combo| combo.sort == provided_keys }
+
+        raise ArgumentError, invalid_search_params_message(provided_keys)
+      end
+
+      def invalid_search_params_message(provided_keys)
+        valid_combos = VALID_SEARCH_COMBINATIONS.map { |c| c.join(', ') }.join("\n  - ")
+
+        "Invalid search parameter combination: #{provided_keys.join(', ')}. " \
+          "Valid combinations are:\n  - #{valid_combos}"
       end
     end
   end
