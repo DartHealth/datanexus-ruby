@@ -4,14 +4,6 @@ Ruby client for the DataNexus API.
 
 ## Installation
 
-Install from GitHub (before gem is published):
-
-```ruby
-gem 'data_nexus', git: 'https://github.com/DartHealth/datanexus-ruby.git', tag: 'v0.1.0'
-```
-
-Or from RubyGems (once published):
-
 ```ruby
 gem 'data_nexus'
 ```
