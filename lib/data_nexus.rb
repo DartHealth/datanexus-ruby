@@ -34,7 +34,7 @@ module DataNexus
     # @example
     #   DataNexus.configure do |config|
     #     config.api_key = "your_api_key"
-    #     config.base_url = "https://api.datanexus.com"
+    #     config.base_url = "https://datanexus.darthealth.com"
     #   end
     #
     # @yield [Configuration]

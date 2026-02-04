@@ -13,7 +13,7 @@ gem 'data_nexus'
 ```ruby
 client = DataNexus::Client.new(
   api_key: ENV['DATANEXUS_API_KEY'],
-  base_url: 'https://api.datanexus.com'  # optional
+  base_url: 'https://datanexus.darthealth.com'  # optional
 )
 ```
 
