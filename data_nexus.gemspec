@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ['alexkibler@me.com']
 
   spec.summary = 'Ruby client for the DataNexus API'
-  spec.description = "A Ruby gem for interacting with the Dart Health's DataNexus API."
+  spec.description = "A Ruby gem for interacting with Dart Health's Data Nexus API."
   spec.homepage = 'https://github.com/DartHealth/datanexus-ruby'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.0.0'
