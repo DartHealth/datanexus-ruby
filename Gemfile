@@ -12,7 +12,7 @@ gem 'rspec', '~> 3.0'
 
 gem 'rubocop', '~> 1.88'
 gem 'rubocop-rake', '~> 0.6'
-gem 'rubocop-rspec', '~> 3.0'
+gem 'rubocop-rspec', '~> 3.10'
 
 gem 'vcr', '~> 6.0'
 gem 'webmock', '~> 3.26'
