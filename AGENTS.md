@@ -24,6 +24,15 @@
 - Run `bundle exec rspec` to run tests
 - Run `bundle exec rubocop` to lint
 
+## GitHub Actions scanning
+
+`.github/workflows/github-actions-scan.yml` runs zizmor (security) and actionlint (correctness) on every PR and on every push to `main`, and fails on any finding. Before pushing a workflow change, run both locally:
+
+- `GH_TOKEN=$(gh auth token) zizmor .` (without a token, zizmor skips its online audits)
+- `actionlint`
+
+Pin every action to a full commit SHA, with the exact version in a comment; `pinact run` does this. Dependabot keeps the pins current. To suppress a finding, add `# zizmor: ignore[<audit>]` with a reason on the offending line.
+
 ## Releasing
 
 1. Bump the version in `lib/data_nexus/version.rb`

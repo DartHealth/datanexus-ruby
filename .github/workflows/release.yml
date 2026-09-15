@@ -12,13 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
+      # No bundler cache in this job (zizmor cache-poisoning). This job
+      # publishes the gem, and any workflow run on this repo can write the
+      # cache, so a restored cache could hand the release poisoned
+      # dependencies. A fresh install costs seconds.
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: "3.2"
-          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
 
       - name: Run tests
         run: bundle exec rspec
@@ -38,10 +46,14 @@ jobs:
         run: |
           gem build data_nexus.gemspec
           GEM_FILE=$(ls data_nexus-*.gem)
-          echo "gem_file=$GEM_FILE" >> $GITHUB_OUTPUT
+          echo "gem_file=$GEM_FILE" >> "$GITHUB_OUTPUT"
           echo "Built: $GEM_FILE"
 
+      # Publishes with a long-lived API key. Moving to RubyGems trusted
+      # publishing (OIDC, no stored secret) is a follow-up to SC-6615: it needs
+      # a trusted publisher registered on rubygems.org first.
       - name: Push to RubyGems
-        run: gem push ${{ steps.build.outputs.gem_file }}
+        run: gem push "$GEM_FILE" # zizmor: ignore[use-trusted-publishing] -- follow-up to SC-6615
         env:
+          GEM_FILE: ${{ steps.build.outputs.gem_file }}
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
