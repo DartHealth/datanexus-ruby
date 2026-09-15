@@ -11,3 +11,11 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
+  # Keeps the SHA-pinned actions in .github/workflows current (SC-6615).
+  # Without this entry the pins would never move.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
