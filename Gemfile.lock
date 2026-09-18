@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    data_nexus (0.2.1)
+    data_nexus (0.2.2)
       faraday (~> 2.0)
       faraday-retry (~> 2.0)
 
