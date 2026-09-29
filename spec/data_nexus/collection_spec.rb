@@ -101,8 +101,25 @@ RSpec.describe DataNexus::Collection do
     end
 
     it 'calls list on the resource with the end_cursor' do
+      page2 = described_class.new({ data: [{ id: '3' }], end_cursor: 'end_2' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page2)
+
       collection.next_page
       expect(resource).to have_received(:list).with(first: 50, born_on: '1976-07-04', after: 'end_xyz')
+    end
+
+    it 'returns the page fetched from the resource' do
+      page2 = described_class.new({ data: [{ id: '3' }], end_cursor: 'end_2' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page2)
+
+      expect(collection.next_page).to eq(page2)
+    end
+
+    it 'returns nil when the API ignores the cursor and returns the same page' do
+      same_page = described_class.new(response, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(same_page)
+
+      expect(collection.next_page).to be_nil
     end
   end
 
@@ -113,8 +130,25 @@ RSpec.describe DataNexus::Collection do
     end
 
     it 'calls list on the resource with the start_cursor' do
+      page0 = described_class.new({ data: [{ id: '0' }], start_cursor: 'start_0' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page0)
+
       collection.previous_page
       expect(resource).to have_received(:list).with(first: 50, born_on: '1976-07-04', before: 'start_abc')
+    end
+
+    it 'returns the page fetched from the resource' do
+      page0 = described_class.new({ data: [{ id: '0' }], start_cursor: 'start_0' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page0)
+
+      expect(collection.previous_page).to eq(page0)
+    end
+
+    it 'returns nil when the API ignores the cursor and returns the same page' do
+      same_page = described_class.new(response, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(same_page)
+
+      expect(collection.previous_page).to be_nil
     end
   end
 
