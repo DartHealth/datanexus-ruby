@@ -17,6 +17,36 @@ client = DataNexus::Client.new(
 )
 ```
 
+## Programs
+
+### List Programs
+
+Lists the programs your API key can see, sorted by name. Each program has an `:id` and a `:name`.
+
+```ruby
+collection = client.programs.list
+
+collection.data.each do |program|
+  puts "#{program[:id]} #{program[:name]}"
+end
+```
+
+Note: The API currently returns only the first 25 programs and ignores paging parameters (`first`, `after`, `before`, `last`). If your API key can see more than 25 programs, the rest are not returned.
+
+### Look Up a Program by Name
+
+Every program-scoped call needs a program ID. To start from a program's name:
+
+```ruby
+program = client.programs.list.data.find { |p| p[:name] == 'Example Program' }
+raise "Program not found: Example Program" unless program
+
+client.programs(program[:id]).search_members(
+  born_on: '1980-01-15',
+  employee_id: 'EMP123'
+)
+```
+
 ## Program Members
 
 ### List Members
@@ -36,6 +66,8 @@ collection.data.each do |member|
   puts "#{member[:first_name]} #{member[:last_name]}"
 end
 ```
+
+Note: Program member lists return a single page of up to 25 members. See [Pagination](#pagination).
 
 ### Search Members
 
@@ -76,25 +108,9 @@ result = client.programs('program-id').search_members(
 )
 ```
 
-Note: Unlike `list`, `search_members` does not support pagination. It returns up to 10 results with a `more_results` boolean. An `ArgumentError` will be raised if an invalid parameter combination is provided.
+Note: `search_members` does not support pagination. It returns up to 10 results with a `more_results` boolean. An `ArgumentError` will be raised if an invalid parameter combination is provided.
 
 Note: Depending on your API key, `search_members` may be the only method you have access to. Contact your DataNexus representative for more information about your API key's permissions.
-
-### Pagination
-
-```ruby
-collection.each_page do |page|
-  page.data.each { |member| process(member) }
-end
-
-# Or iterate all records directly
-collection.each { |member| process(member) }
-
-# Manual pagination
-if collection.next_page?
-  next_collection = collection.next_page
-end
-```
 
 ### Find Member
 
@@ -226,6 +242,28 @@ response = client.members.update('member-id',
   member: { phone_number: '+15551234567' }
 )
 ```
+
+## Pagination
+
+`list` methods return a `DataNexus::Collection`, one page of records plus cursors. Top-level member lists (`client.members.list`) page with `first`, `after`, `before` and `last`:
+
+```ruby
+collection = client.members.list(first: 50)
+
+collection.each_page do |page|
+  page.data.each { |member| process(member) }
+end
+
+# Or iterate all records directly
+collection.each { |member| process(member) }
+
+# Manual pagination
+if collection.next_page?
+  next_collection = collection.next_page
+end
+```
+
+Note: Program lists (`client.programs.list`) and program member lists (`client.programs('program-id').members.list`) currently return a single page of up to 25 records. `each` and `each_page` stop after that page. `next_page?` can still return `true` for these lists, and `next_page` then returns `nil`.
 
 ## Error Handling
 

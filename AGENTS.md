@@ -14,6 +14,7 @@
   - `collection.rb` - Collection handling
   - `errors.rb` - Custom error classes
   - `version.rb` - Gem version (bump here for releases)
+- `CHANGELOG.md` - User-facing changes per release
 - `spec/` - RSpec tests
 - `.github/workflows/` - CI and release automation
 
@@ -35,10 +36,12 @@ Pin every action to a full commit SHA, with the exact version in a comment; `pin
 
 ## Releasing
 
-1. Bump the version in `lib/data_nexus/version.rb`
+1. Bump the version in `lib/data_nexus/version.rb`. In `CHANGELOG.md`, rename `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD`, add a new empty `## [Unreleased]` section above it, and update the links at the bottom: `[Unreleased]` compares `vX.Y.Z...HEAD`, and a new `[X.Y.Z]` link compares the previous tag to `vX.Y.Z`
 2. Merge to `main`
-3. Create a GitHub Release with tag `vX.Y.Z` matching the version
+3. Create a GitHub Release with tag `vX.Y.Z` matching the version. Paste that version's `CHANGELOG.md` section above GitHub's generated pull request list
 4. The release workflow runs tests, verifies the version/tag match, builds, and pushes to RubyGems
+
+Any pull request that changes shipped behavior (anything under `lib/`, or runtime dependencies in the gemspec) adds an entry under `[Unreleased]` in `CHANGELOG.md`.
 
 ## When to Suggest a Release
 
