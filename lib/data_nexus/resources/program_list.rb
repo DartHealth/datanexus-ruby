@@ -11,7 +11,7 @@ module DataNexus
     #   collection.data.each { |program| puts "#{program[:id]} #{program[:name]}" }
     #
     # @example Look up a program ID by name
-    #   program = client.programs.list.data.find { |p| p[:name] == "Example Program" }
+    #   program = client.programs.list(name: "Example Program").data.first
     #   raise "Program not found" unless program
     #   client.programs(program[:id]).search_members(born_on: "1976-07-04", employee_id: "ABC123")
     #
@@ -28,9 +28,9 @@ module DataNexus
 
       # List programs, sorted by name
       #
-      # Note: the API currently returns at most 25 programs and ignores the
-      # paging parameters below.
+      # A page holds 25 programs unless you pass `first` or `last`.
       #
+      # @param name [String, nil] Return only programs with this name, ignoring case
       # @param after [String, nil] Cursor for next group of records
       # @param before [String, nil] Cursor for previous group of records
       # @param first [Integer, nil] Number of records to fetch after cursor
@@ -42,10 +42,13 @@ module DataNexus
       #   collection = client.programs.list
       #   collection.data.each { |p| puts p[:name] }
       #
-      # @example Iterate over every program returned
+      # @example Filter by name
+      #   collection = client.programs.list(name: "Example Program")
+      #
+      # @example Iterate over every program, across pages
       #   client.programs.list.each { |p| puts p[:name] }
       def list(**params)
-        allowed_params = %i[after before first last]
+        allowed_params = %i[after before first last name]
 
         query_params = params.slice(*allowed_params).compact
         response = connection.get(base_path, query_params)

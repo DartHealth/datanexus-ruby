@@ -8,16 +8,16 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ### Added
 
-- `client.programs.list` lists the programs your API key can see, sorted by name. Each program has an `:id` and a `:name`, so an app can look up a program ID by name without leaving the gem ([sc-6843](https://app.shortcut.com/dart/story/6843)):
+- `client.programs.list` lists the programs your API key can see, sorted by name. Each program has an `:id` and a `:name`. It pages with `first`, `after`, `before` and `last` (25 programs per page by default), and `name:` filters by program name, ignoring case, so an app can look up a program ID without leaving the gem ([sc-6843](https://app.shortcut.com/dart/story/6843)):
 
   ```ruby
-  program = client.programs.list.data.find { |p| p[:name] == 'Example Program' }
+  program = client.programs.list(name: 'Example Program').data.first
   raise "Program not found: Example Program" unless program
 
   client.programs(program[:id]).search_members(born_on: '1980-01-15', employee_id: 'EMP123')
   ```
 
-  The API currently returns only the first 25 programs and ignores paging parameters.
+- `Collection#next_page?` and `#previous_page?` return `false` when the response's `has_next_page` or `has_previous_page` is `false`, so iterating a list that sends those flags (such as `client.programs.list`) stops without requesting an empty page.
 
 ### Changed
 

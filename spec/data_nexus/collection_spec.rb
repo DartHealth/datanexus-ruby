@@ -76,6 +76,16 @@ RSpec.describe DataNexus::Collection do
       no_next = described_class.new({ data: [], end_cursor: '' }, resource: resource, params: params)
       expect(no_next.next_page?).to be false
     end
+
+    it 'returns false when the API says there is no next page' do
+      last_page = described_class.new(response.merge(has_next_page: false), resource: resource, params: params)
+      expect(last_page.next_page?).to be false
+    end
+
+    it 'returns true when the API says there is a next page' do
+      more = described_class.new(response.merge(has_next_page: true), resource: resource, params: params)
+      expect(more.next_page?).to be true
+    end
   end
 
   describe '#previous_page?' do
@@ -91,6 +101,11 @@ RSpec.describe DataNexus::Collection do
     it 'returns false when start_cursor is empty' do
       no_prev = described_class.new({ data: [], start_cursor: '' }, resource: resource, params: params)
       expect(no_prev.previous_page?).to be false
+    end
+
+    it 'returns false when the API says there is no previous page' do
+      first_page = described_class.new(response.merge(has_previous_page: false), resource: resource, params: params)
+      expect(first_page.previous_page?).to be false
     end
   end
 

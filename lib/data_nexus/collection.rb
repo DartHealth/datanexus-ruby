@@ -41,14 +41,21 @@ module DataNexus
       @data = response[:data] || []
       @start_cursor = response[:start_cursor]
       @end_cursor = response[:end_cursor]
+      @has_next_page = response[:has_next_page]
+      @has_previous_page = response[:has_previous_page]
       @resource = resource
       @params = params
     end
 
     # Check if there's a next page of results
     #
+    # Uses the response's has_next_page flag when the endpoint sends one,
+    # and otherwise assumes a page with an end_cursor may have a next page.
+    #
     # @return [Boolean]
     def next_page?
+      return false if @has_next_page == false
+
       !end_cursor.nil? && !end_cursor.empty?
     end
 
@@ -67,8 +74,13 @@ module DataNexus
 
     # Check if there's a previous page of results
     #
+    # Uses the response's has_previous_page flag when the endpoint sends one,
+    # and otherwise assumes a page with a start_cursor may have a previous page.
+    #
     # @return [Boolean]
     def previous_page?
+      return false if @has_previous_page == false
+
       !start_cursor.nil? && !start_cursor.empty?
     end
 

@@ -4,7 +4,7 @@ RSpec.describe DataNexus::Resources::ProgramList do
   let(:base_url) { 'https://datanexus.test' }
   let(:client) { DataNexus::Client.new(api_key: 'test-api-key', base_url: base_url) }
 
-  let(:page1) do
+  let(:first_page) do
     {
       data: [
         { id: 'program-1', name: 'Another Program' },
@@ -12,6 +12,15 @@ RSpec.describe DataNexus::Resources::ProgramList do
       ],
       start_cursor: 'cursor-1',
       end_cursor: 'cursor-2'
+    }
+  end
+
+  let(:last_page) do
+    {
+      data: [{ id: 'program-3', name: 'Last Program' }],
+      start_cursor: 'cursor-3',
+      end_cursor: 'cursor-3',
+      has_next_page: false
     }
   end
 
@@ -33,38 +42,37 @@ RSpec.describe DataNexus::Resources::ProgramList do
 
   describe '#list' do
     it 'returns a collection of the programs the API key can see' do
-      stub_programs({}, page1)
+      stub_programs({}, first_page)
 
       collection = client.programs.list
 
-      expect(collection).to be_a(DataNexus::Collection).and have_attributes(data: page1[:data], end_cursor: 'cursor-2')
+      expect(collection).to be_a(DataNexus::Collection)
+        .and have_attributes(data: first_page[:data], end_cursor: 'cursor-2')
     end
 
     it 'sends pagination params and drops unknown ones' do
-      stub = stub_programs({ 'first' => '10', 'after' => 'cursor-0' }, page1)
+      stub = stub_programs({ 'first' => '10', 'after' => 'cursor-0' }, first_page)
 
       client.programs.list(first: 10, after: 'cursor-0', bogus: 'x')
 
       expect(stub).to have_been_requested
     end
 
-    it 'finds a program by name' do
-      stub_programs({}, page1)
+    it 'filters by name' do
+      stub = stub_programs({ 'name' => 'Example Program' }, first_page)
 
-      program = client.programs.list.data.find { |p| p[:name] == 'Example Program' }
+      client.programs.list(name: 'Example Program')
 
-      expect(program[:id]).to eq('program-2')
+      expect(stub).to have_been_requested
     end
 
-    it 'stops paging when the API ignores the cursor and returns the same page' do
-      stub_request(:get, "#{base_url}/api/programs")
-        .with(query: hash_including({}))
-        .to_return(status: 200, body: page1.to_json, headers: { 'Content-Type' => 'application/json' })
+    it 'follows cursors across pages and stops when has_next_page is false' do
+      stub_programs({}, first_page.merge(has_next_page: true))
+      stub_programs({ 'after' => 'cursor-2' }, last_page)
 
-      # Bounded so a regression fails instead of looping forever
-      pages = client.programs.list.each_page.first(3)
+      names = client.programs.list.each.map { |p| p[:name] }
 
-      expect(pages.size).to eq(1)
+      expect(names).to eq(['Another Program', 'Example Program', 'Last Program'])
     end
   end
 end

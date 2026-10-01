@@ -31,14 +31,14 @@ collection.data.each do |program|
 end
 ```
 
-Note: The API currently returns only the first 25 programs and ignores paging parameters (`first`, `after`, `before`, `last`). If your API key can see more than 25 programs, the rest are not returned.
+A page holds 25 programs by default. `list` takes `first`, `after`, `before` and `last`, and `each` reads every page. See [Pagination](#pagination).
 
 ### Look Up a Program by Name
 
-Every program-scoped call needs a program ID. To start from a program's name:
+Every program-scoped call needs a program ID. To start from a program's name, filter by `name`. The match ignores case and surrounding whitespace:
 
 ```ruby
-program = client.programs.list.data.find { |p| p[:name] == 'Example Program' }
+program = client.programs.list(name: 'Example Program').data.first
 raise "Program not found: Example Program" unless program
 
 client.programs(program[:id]).search_members(
@@ -245,7 +245,7 @@ response = client.members.update('member-id',
 
 ## Pagination
 
-`list` methods return a `DataNexus::Collection`, one page of records plus cursors. Top-level member lists (`client.members.list`) page with `first`, `after`, `before` and `last`:
+`list` methods return a `DataNexus::Collection`, one page of records plus cursors. Program lists (`client.programs.list`) and top-level member lists (`client.members.list`) page with `first`, `after`, `before` and `last`:
 
 ```ruby
 collection = client.members.list(first: 50)
@@ -263,7 +263,7 @@ if collection.next_page?
 end
 ```
 
-Note: Program lists (`client.programs.list`) and program member lists (`client.programs('program-id').members.list`) currently return a single page of up to 25 records. `each` and `each_page` stop after that page. `next_page?` can still return `true` for these lists, and `next_page` then returns `nil`.
+Note: Program member lists (`client.programs('program-id').members.list`) currently return a single page of up to 25 records. `each` and `each_page` stop after that page. `next_page?` can still return `true` for these lists, and `next_page` then returns `nil`.
 
 ## Error Handling
 
