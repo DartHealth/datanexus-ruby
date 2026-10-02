@@ -76,6 +76,16 @@ RSpec.describe DataNexus::Collection do
       no_next = described_class.new({ data: [], end_cursor: '' }, resource: resource, params: params)
       expect(no_next.next_page?).to be false
     end
+
+    it 'returns false when the API says there is no next page' do
+      last_page = described_class.new(response.merge(has_next_page: false), resource: resource, params: params)
+      expect(last_page.next_page?).to be false
+    end
+
+    it 'returns true when the API says there is a next page' do
+      more = described_class.new(response.merge(has_next_page: true), resource: resource, params: params)
+      expect(more.next_page?).to be true
+    end
   end
 
   describe '#previous_page?' do
@@ -92,6 +102,11 @@ RSpec.describe DataNexus::Collection do
       no_prev = described_class.new({ data: [], start_cursor: '' }, resource: resource, params: params)
       expect(no_prev.previous_page?).to be false
     end
+
+    it 'returns false when the API says there is no previous page' do
+      first_page = described_class.new(response.merge(has_previous_page: false), resource: resource, params: params)
+      expect(first_page.previous_page?).to be false
+    end
   end
 
   describe '#next_page' do
@@ -101,8 +116,25 @@ RSpec.describe DataNexus::Collection do
     end
 
     it 'calls list on the resource with the end_cursor' do
+      page2 = described_class.new({ data: [{ id: '3' }], end_cursor: 'end_2' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page2)
+
       collection.next_page
       expect(resource).to have_received(:list).with(first: 50, born_on: '1976-07-04', after: 'end_xyz')
+    end
+
+    it 'returns the page fetched from the resource' do
+      page2 = described_class.new({ data: [{ id: '3' }], end_cursor: 'end_2' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page2)
+
+      expect(collection.next_page).to eq(page2)
+    end
+
+    it 'returns nil when the API ignores the cursor and returns the same page' do
+      same_page = described_class.new(response, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(same_page)
+
+      expect(collection.next_page).to be_nil
     end
   end
 
@@ -113,8 +145,25 @@ RSpec.describe DataNexus::Collection do
     end
 
     it 'calls list on the resource with the start_cursor' do
+      page0 = described_class.new({ data: [{ id: '0' }], start_cursor: 'start_0' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page0)
+
       collection.previous_page
       expect(resource).to have_received(:list).with(first: 50, born_on: '1976-07-04', before: 'start_abc')
+    end
+
+    it 'returns the page fetched from the resource' do
+      page0 = described_class.new({ data: [{ id: '0' }], start_cursor: 'start_0' }, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(page0)
+
+      expect(collection.previous_page).to eq(page0)
+    end
+
+    it 'returns nil when the API ignores the cursor and returns the same page' do
+      same_page = described_class.new(response, resource: resource, params: params)
+      allow(resource).to receive(:list).and_return(same_page)
+
+      expect(collection.previous_page).to be_nil
     end
   end
 

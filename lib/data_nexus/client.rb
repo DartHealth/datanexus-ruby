@@ -3,6 +3,7 @@
 require_relative 'configuration'
 require_relative 'connection'
 require_relative 'resources/members'
+require_relative 'resources/program_list'
 require_relative 'resources/programs'
 
 module DataNexus
@@ -14,6 +15,9 @@ module DataNexus
   # @example Create a client with a configuration object
   #   config = DataNexus::Configuration.new(api_key: "your_api_key")
   #   client = DataNexus::Client.new(config: config)
+  #
+  # @example List programs
+  #   client.programs.list.each { |program| puts "#{program[:id]} #{program[:name]}" }
   #
   # @example Access program members
   #   client.programs("program-uuid").members.list
@@ -60,15 +64,26 @@ module DataNexus
       Resources::Members.new(connection)
     end
 
-    # Access program-scoped resources
+    # Access programs
     #
-    # @param program_id [String] The program UUID
-    # @return [Resources::Programs] A program resource proxy
+    # When called without an argument, returns a resource for listing programs.
+    # When called with a program_id, returns a proxy for program-scoped resources.
     #
-    # @example
+    # @param program_id [String, nil] The program UUID (optional)
+    # @return [Resources::ProgramList] When no program_id provided - for listing programs
+    # @return [Resources::Programs] When program_id provided - a program resource proxy
+    #
+    # @example List programs
+    #   client.programs.list
+    #
+    # @example Access program members
     #   client.programs("uuid").members.list
-    def programs(program_id)
-      Resources::Programs.new(connection, program_id)
+    def programs(program_id = nil)
+      if program_id
+        Resources::Programs.new(connection, program_id)
+      else
+        Resources::ProgramList.new(connection)
+      end
     end
 
     private

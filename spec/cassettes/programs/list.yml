@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:4000/api/programs
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - apikey <API_KEY>
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      User-Agent:
+      - data-nexus-ruby/0.2.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Sep 2026 03:07:04 GMT
+      Content-Length:
+      - '406'
+      Vary:
+      - accept-encoding
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - GNmrzTwTJp0vXn0AAKhC
+      X-End-Cursor:
+      - g3QAAAACdwJpZG0AAAAkNWQxNDcwMjEtYjQwNy00OWYzLTljN2EtZmFiOWYwZmFjNzMydwRuYW1lbQAAABFFeGFtcGxlIFByb2dyYW0gQg==
+      X-Start-Cursor:
+      - g3QAAAACdwJpZG0AAAAkOTRjMDVkODMtZWUxZC00ODRkLTkyMGItODYxZDFkNWU5MDkydwRuYW1lbQAAABFFeGFtcGxlIFByb2dyYW0gQQ==
+    body:
+      encoding: ASCII-8BIT
+      string: '{"data":[{"id":"<PROGRAM_ID>","name":"Example Program A"},{"id":"5d147021-b407-49f3-9c7a-fab9f0fac732","name":"Example
+        Program B"}],"end_cursor":"g3QAAAACdwJpZG0AAAAkNWQxNDcwMjEtYjQwNy00OWYzLTljN2EtZmFiOWYwZmFjNzMydwRuYW1lbQAAABFFeGFtcGxlIFByb2dyYW0gQg==","start_cursor":"g3QAAAACdwJpZG0AAAAkOTRjMDVkODMtZWUxZC00ODRkLTkyMGItODYxZDFkNWU5MDkydwRuYW1lbQAAABFFeGFtcGxlIFByb2dyYW0gQQ=="}'
+  recorded_at: Tue, 29 Sep 2026 03:07:04 GMT
+recorded_with: VCR 6.4.0

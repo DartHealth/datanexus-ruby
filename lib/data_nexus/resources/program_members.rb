@@ -7,15 +7,14 @@ module DataNexus
     # Provides methods for listing and searching members within a specific program.
     # For operations on a specific member, use `programs("uuid").members("member-id")`.
     #
+    # Note: `list` currently returns a single page of up to 25 members, and
+    # iteration stops after that page.
+    #
     # @example List members with filters
     #   client.programs("uuid").members.list(
     #     first_name: "george",
     #     born_on: "1976-07-04"
     #   )
-    #
-    # @example Paginate through members
-    #   collection = client.programs("uuid").members.list(first: 50)
-    #   collection.each_page { |page| process(page.data) }
     #
     class ProgramMembers
       # @return [Connection] The HTTP connection
@@ -42,7 +41,7 @@ module DataNexus
       # @param born_on [String, nil] Filter by date of birth (YYYY-MM-DD)
       # @param employee_id [String, nil] Filter by employee ID
       #
-      # @return [Collection] Paginated collection of members
+      # @return [Collection] The first page of matching members
       #
       # @example Basic listing
       #   collection = client.programs("uuid").members.list
