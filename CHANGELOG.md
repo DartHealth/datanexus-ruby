@@ -6,6 +6,8 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-02
+
 ### Added
 
 - `client.programs.list` lists the programs your API key can see, sorted by name. Each program has an `:id` and a `:name`. It pages with `first`, `after`, `before` and `last` (25 programs per page by default), and `name:` filters by program name, ignoring case, so an app can look up a program ID without leaving the gem ([sc-6843](https://app.shortcut.com/dart/story/6843)):
@@ -59,7 +61,8 @@ Tagged but not published to RubyGems. 0.2.0 was the first published version and 
 - `DataNexus::Collection` for cursor-paginated lists (`next_page`, `previous_page`, `each_page`, `each`).
 - Error classes for API errors (`AuthenticationError`, `NotFoundError`, `RateLimitError` and others) and connection errors.
 
-[Unreleased]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/DartHealth/datanexus-ruby/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.1.0...v0.2.0
