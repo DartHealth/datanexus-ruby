@@ -15,7 +15,7 @@
 - Repo: `~/src/darthealth/datanexus-ruby` (remote `DartHealth/datanexus-ruby`). Branch from `origin/main`.
 - Branch name: `briansage/sc-7043/readme-require` (the repo's existing `briansage/sc-NNNN/<slug>` pattern).
 - Brian's global git config sets `push.default tracking`. Branch with `--no-track` and push with the full `HEAD:refs/heads/<branch>` refspec. A branch that tracks `origin/main` pushes to `main`.
-- Change only the Usage code block in `README.md`. Don't edit `CHANGELOG.md`. The README isn't gem behaviour, and the 0.3.0 entry is already released.
+- Change only the Usage code block in `README.md`, plus `docs/` in the gemspec's `spec.files` reject list so committed plans don't ship in the gem. Don't edit `CHANGELOG.md`. The README isn't gem behaviour, and the 0.3.0 entry is already released.
 - No version bump. This doesn't need a gem release.
 - Never call the real Data Nexus API. Every run uses the stub harness and the fake key `test-key`.
 - Commit messages end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. PR descriptions end with `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
