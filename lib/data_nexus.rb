@@ -2,6 +2,7 @@
 
 require_relative 'data_nexus/version'
 require_relative 'data_nexus/errors'
+require_relative 'data_nexus/error_message'
 require_relative 'data_nexus/configuration'
 require_relative 'data_nexus/connection'
 require_relative 'data_nexus/client'
