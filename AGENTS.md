@@ -20,7 +20,7 @@
 
 ## Development
 
-- Ruby >= 3.0.0
+- Ruby >= 3.3.0
 - Run `bundle install` to install dependencies
 - Run `bundle exec rspec` to run tests
 - Run `bundle exec rubocop` to lint
