@@ -6,6 +6,10 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ## [Unreleased]
 
+### Removed
+
+- Support for Ruby 3.0, 3.1 and 3.2, which are past end-of-life. The gem now requires Ruby 3.3 or later ([sc-7095](https://app.shortcut.com/dart/story/7095)).
+
 ## [0.3.0] - 2026-10-02
 
 ### Added
