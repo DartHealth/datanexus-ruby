@@ -6,6 +6,14 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ## [Unreleased]
 
+### Added
+
+- `UnprocessableEntityError#code` returns why an enrollment create failed: `no_prevailing_sponsor_member`, `program_not_found` or `not_eligible_for_program`. It is `nil` for other 422s, such as field or request validation errors. The README shows how to branch on it ([sc-6990](https://app.shortcut.com/dart/story/6990)).
+
+### Fixed
+
+- Error messages are readable when the API's `errors` is an object or a list. `error.message` used to show the first key/value pair, such as `[:code, "not_eligible_for_program"]`. It now shows the API's `detail`, field errors as `expires_at must be after enrolled_at`, and request validation errors as `/enrollment/enrolled_at: Invalid format. Expected :"date-time"`.
+
 ## [0.3.0] - 2026-10-02
 
 ### Added

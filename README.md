@@ -283,6 +283,28 @@ rescue DataNexus::APIError => e
 end
 ```
 
+When an enrollment create fails, `UnprocessableEntityError#code` says why. Branch on `code`, not on `message`:
+
+```ruby
+begin
+  client.programs('program-id').members('member-id').enrollments.create(
+    enrollment: { enrolled_at: '2024-01-01T00:00:00Z' }
+  )
+rescue DataNexus::UnprocessableEntityError => e
+  case e.code
+  when 'not_eligible_for_program'
+    # The member has no active eligibility for the program on the enrollment date
+  when 'program_not_found'
+    # No program with that ID is available to this API key
+  when 'no_prevailing_sponsor_member'
+    # The member has no sponsor membership to enroll under
+  else
+    # code is nil: the attributes were inconsistent or the request was malformed
+    puts e.message
+  end
+end
+```
+
 ## Development
 
 ```bash
