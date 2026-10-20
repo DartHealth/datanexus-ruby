@@ -40,7 +40,14 @@ module DataNexus
   class BadRequestError < APIError; end
 
   # Raised when validation fails (422)
-  class UnprocessableEntityError < APIError; end
+  class UnprocessableEntityError < APIError
+    # @return [String, nil] The API's reason code (such as "not_eligible_for_program"),
+    #   or nil when the response has none
+    def code
+      errors = response_body[:errors] if response_body.is_a?(Hash)
+      errors[:code] if errors.is_a?(Hash) && errors[:code].is_a?(String)
+    end
+  end
 
   # Raised when rate limit is exceeded (429)
   class RateLimitError < APIError
