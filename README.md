@@ -2,6 +2,8 @@
 
 Ruby client for the DataNexus API.
 
+The full API reference is in [DartHealth/datanexus-openapi](https://github.com/DartHealth/datanexus-openapi).
+
 ## Installation
 
 ```ruby
