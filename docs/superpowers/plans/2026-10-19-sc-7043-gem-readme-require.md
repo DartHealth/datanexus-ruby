@@ -12,8 +12,9 @@
 
 ## Global Constraints
 
-- Repo: `~/src/darthealth/datanexus-ruby` (remote `DartHealth/datanexus-ruby`). Branch from `origin/main`. The local checkout is on `briansage/sc-6843/list-programs-in-gem`, whose remote branch is gone, and its working tree is clean.
+- Repo: `~/src/darthealth/datanexus-ruby` (remote `DartHealth/datanexus-ruby`). Branch from `origin/main`.
 - Branch name: `briansage/sc-7043/readme-require` (the repo's existing `briansage/sc-NNNN/<slug>` pattern).
+- Brian's global git config sets `push.default tracking`. Branch with `--no-track` and push with the full `HEAD:refs/heads/<branch>` refspec. A branch that tracks `origin/main` pushes to `main`.
 - Change only the Usage code block in `README.md`. Don't edit `CHANGELOG.md`. The README isn't gem behaviour, and the 0.3.0 entry is already released.
 - No version bump. This doesn't need a gem release.
 - Never call the real Data Nexus API. Every run uses the stub harness and the fake key `test-key`.
@@ -46,7 +47,7 @@
 cd ~/src/darthealth/datanexus-ruby
 git status --porcelain   # expected: no output
 git fetch origin
-git switch -c briansage/sc-7043/readme-require origin/main
+git switch --no-track -c briansage/sc-7043/readme-require origin/main
 
 H="${TMPDIR:-/tmp}/readme-check-sc-7043"
 mkdir -p "$H"
@@ -197,7 +198,7 @@ EOF
 
 ```bash
 cd ~/src/darthealth/datanexus-ruby
-git push -u origin briansage/sc-7043/readme-require
+git push -u origin HEAD:refs/heads/briansage/sc-7043/readme-require
 gh pr create --base main --title "Show require 'data_nexus' in the README's Usage example (sc-7043)" --body "$(cat <<'EOF'
 ## Summary
 
