@@ -21,4 +21,4 @@ gem 'webmock', '~> 3.31'
 gem 'public_suffix', '< 7.0'
 
 # Pin erb for Ruby 3.0/3.1 compatibility (5.0+ requires Ruby >= 3.2)
-gem 'erb', '~> 4.0'
+gem 'erb', '~> 6.0'
