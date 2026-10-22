@@ -6,6 +6,8 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-22
+
 ### Removed
 
 - Support for Ruby 3.0, 3.1 and 3.2, which are past end-of-life. The gem now requires Ruby 3.3 or later ([sc-7095](https://app.shortcut.com/dart/story/7095)).
@@ -65,7 +67,8 @@ Tagged but not published to RubyGems. 0.2.0 was the first published version and 
 - `DataNexus::Collection` for cursor-paginated lists (`next_page`, `previous_page`, `each_page`, `each`).
 - Error classes for API errors (`AuthenticationError`, `NotFoundError`, `RateLimitError` and others) and connection errors.
 
-[Unreleased]: https://github.com/DartHealth/datanexus-ruby/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/DartHealth/datanexus-ruby/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.0...v0.2.1
