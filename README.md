@@ -297,6 +297,8 @@ bundle exec rspec
 bundle exec rubocop
 ```
 
+Every pull request needs an approving review from a code owner listed in [`.github/CODEOWNERS`](.github/CODEOWNERS) before it can merge. An automated review, such as CodeRabbit's, doesn't count, and a push after the approval needs a fresh one.
+
 ## License
 
 MIT
