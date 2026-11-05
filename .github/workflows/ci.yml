@@ -11,7 +11,7 @@ on:
 jobs:
   test:
     # setup-ruby has no Ruby 3.0/3.1 builds for ubuntu-26.04 (ubuntu-latest)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
