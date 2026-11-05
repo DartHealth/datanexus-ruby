@@ -25,6 +25,12 @@
 - Run `bundle exec rspec` to run tests
 - Run `bundle exec rubocop` to lint
 
+## Pull requests
+
+Every pull request needs an approving review from a code owner listed in `.github/CODEOWNERS` before it can merge. An automated review, such as CodeRabbit's, doesn't count, and a push after the approval needs a fresh one. Never mark a pull request ready to merge on a bot's approval alone; ask a code owner to review it.
+
+This repository is public. Never name a Dart Health client in a commit, pull request, issue or doc; write "a client".
+
 ## GitHub Actions scanning
 
 `.github/workflows/github-actions-scan.yml` runs zizmor (security) and actionlint (correctness) on every PR and on every push to `main`, and fails on any finding. Before pushing a workflow change, run both locally:
