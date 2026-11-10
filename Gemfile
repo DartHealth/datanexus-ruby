@@ -14,7 +14,7 @@ gem 'rubocop', '~> 1.92'
 gem 'rubocop-rake', '~> 0.6'
 gem 'rubocop-rspec', '~> 3.10'
 
-gem 'vcr', '~> 6.0'
+gem 'vcr', '~> 6.4'
 gem 'webmock', '~> 3.34'
 
 # Pin public_suffix for Ruby 3.0/3.1 compatibility (7.0+ requires Ruby >= 3.2)
