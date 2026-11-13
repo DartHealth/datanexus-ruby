@@ -77,7 +77,7 @@ module DataNexus
 
     def configure_request(conn)
       conn.request :json
-      conn.request :retry, max: 2, interval: 0.5, backoff_factor: 2,
+      conn.request :retry, max: config.max_retries, interval: 0.5, backoff_factor: 2,
                            exceptions: [Faraday::TimeoutError, Faraday::ConnectionFailed]
     end
 

@@ -22,6 +22,11 @@ module DataNexus
     # @example Search for members
     #   client.programs("program-uuid").search_members(born_on: "1976-07-04", employee_id: "ABC123")
     #
+    # @example Verify a member
+    #   client.programs("program-uuid").verify_member(
+    #     first_name: "george", last_name: "washington", born_on: "1976-07-04", employee_id: "ABC123"
+    #   )
+    #
     class Programs
       VALID_SEARCH_COMBINATIONS = [
         %i[born_on first_name last_name employee_id],
@@ -30,6 +35,8 @@ module DataNexus
         %i[born_on first_name_prefix last_name_prefix],
         %i[born_on employee_id]
       ].freeze
+
+      VERIFY_FIELDS = %i[first_name last_name born_on employee_id].freeze
 
       # @return [Connection] The HTTP connection
       attr_reader :connection
@@ -125,7 +132,56 @@ module DataNexus
         connection.post("/api/programs/#{program_id}/members/search", params)
       end
 
+      # Verify a member of this program
+      #
+      # Checks whether exactly one member of the program matches all four fields
+      # and whether that member is eligible today. The status is one of:
+      # - "verified": one member matches and is eligible today
+      # - "ineligible": one member matches but isn't eligible today
+      # - "not_found": no member matches
+      # - "multiple_matches": more than one member matches
+      #
+      # The member ID is nil unless the status is "verified" or "ineligible".
+      #
+      # Verify is a POST, so a timed-out request is never retried.
+      #
+      # @param first_name [String] First name
+      # @param last_name [String] Last name
+      # @param born_on [String] Date of birth (YYYY-MM-DD)
+      # @param employee_id [String] Employee ID of the primary participant
+      #
+      # @return [Hash] The :status (String) and :member_id (String, nil)
+      #
+      # @raise [ArgumentError] If a field is nil or blank. The message names the
+      #   field but never its value.
+      # @raise [NotFoundError] If the API answers 404. This is never reported as
+      #   a "not_found" status.
+      #
+      # @example
+      #   result = client.programs("uuid").verify_member(
+      #     first_name: "george",
+      #     last_name: "washington",
+      #     born_on: "1976-07-04",
+      #     employee_id: "ABC1234"
+      #   )
+      #   result[:status]    # => "verified"
+      #   result[:member_id] # => "member-id"
+      def verify_member(first_name:, last_name:, born_on:, employee_id:)
+        fields = { first_name: first_name, last_name: last_name, born_on: born_on, employee_id: employee_id }
+        validate_verify_fields!(fields)
+
+        response = connection.post("/api/programs/#{program_id}/members/verify", fields)
+        response[:data]
+      end
+
       private
+
+      def validate_verify_fields!(fields)
+        blank = VERIFY_FIELDS.select { |field| fields[field].nil? || fields[field].to_s.strip.empty? }
+        return if blank.empty?
+
+        raise ArgumentError, "Missing or blank verify fields: #{blank.join(', ')}"
+      end
 
       def validate_search_params!(params)
         provided_keys = params.keys.sort
