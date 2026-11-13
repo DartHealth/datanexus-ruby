@@ -21,6 +21,23 @@ client = DataNexus::Client.new(
 )
 ```
 
+### Timeouts and Retries
+
+A request times out after `timeout` seconds (default 30), and a connection attempt after `open_timeout` seconds (default 10). A timed-out or failed GET, PUT or DELETE is retried up to `max_retries` times (default 2), waiting 0.5 seconds before the first retry and doubling the wait for each one after. POST and PATCH requests, such as `search_members` and `verify_member`, are never retried.
+
+A member-facing check that must answer quickly can lower the timeouts and turn retries off:
+
+```ruby
+client = DataNexus::Client.new(
+  api_key: ENV['DATANEXUS_API_KEY'],
+  timeout: 2,
+  open_timeout: 1,
+  max_retries: 0
+)
+```
+
+`DataNexus::Configuration.new` takes the same `max_retries:` setting.
+
 ## Programs
 
 ### List Programs
@@ -115,6 +132,35 @@ result = client.programs('program-id').search_members(
 Note: `search_members` does not support pagination. It returns up to 10 results with a `more_results` boolean. An `ArgumentError` will be raised if an invalid parameter combination is provided.
 
 Note: Depending on your API key, `search_members` may be the only method you have access to. Contact your DataNexus representative for more information about your API key's permissions.
+
+### Verify Member
+
+Check whether a person is an eligible member of a program. All four fields are required.
+
+```ruby
+result = client.programs('program-id').verify_member(
+  first_name: 'George',
+  last_name: 'Washington',
+  born_on: '1980-01-15',
+  employee_id: 'EMP123'
+)
+
+result[:status]    # => "verified"
+result[:member_id] # => "member-id"
+```
+
+`result[:status]` is one of:
+
+| Status | Meaning | `member_id` |
+|---|---|---|
+| `"verified"` | One member matches and is eligible for the program today | The member's ID |
+| `"ineligible"` | One member matches, but isn't eligible for the program today | The member's ID |
+| `"not_found"` | No member matches | `nil` |
+| `"multiple_matches"` | More than one member matches | `nil` |
+
+A `verified` member's ID works with `members('member-id').household`. Find, update and household answer 404 for an `ineligible` member's ID.
+
+A `nil` or blank field raises `ArgumentError` naming the field, before any request is sent. The message never includes a submitted value. A 404 from the API raises `DataNexus::NotFoundError`; it never comes back as a `not_found` status. `verify_member` is a POST, so a timed-out request raises `DataNexus::TimeoutError` without a retry.
 
 ### Find Member
 
@@ -284,6 +330,10 @@ rescue DataNexus::RateLimitError => e
   sleep(e.retry_after)
 rescue DataNexus::APIError => e
   puts "#{e.status}: #{e.message}"
+rescue DataNexus::TimeoutError
+  # timed out, after any retries
+rescue DataNexus::ConnectionError
+  # couldn't connect, after any retries
 end
 ```
 

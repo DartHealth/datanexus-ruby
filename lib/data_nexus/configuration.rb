@@ -31,6 +31,9 @@ module DataNexus
     # @return [Boolean] Whether to verify SSL certificates
     attr_accessor :ssl_verify
 
+    # @return [Integer] How many times to retry a timed-out or failed GET, PUT or DELETE
+    attr_accessor :max_retries
+
     # Default base URL for the DataNexus API
     DEFAULT_BASE_URL = 'https://datanexus.darthealth.com'
 
@@ -43,6 +46,9 @@ module DataNexus
     # Default SSL verification setting
     DEFAULT_SSL_VERIFY = true
 
+    # Default number of retries for a timed-out or failed GET, PUT or DELETE
+    DEFAULT_MAX_RETRIES = 2
+
     # Initialize a new Configuration instance
     #
     # @param api_key [String, nil] The API key for authentication
@@ -50,18 +56,22 @@ module DataNexus
     # @param timeout [Integer] Request timeout in seconds
     # @param open_timeout [Integer] Connection open timeout in seconds
     # @param ssl_verify [Boolean] Whether to verify SSL certificates (set to false for self-signed certs)
+    # @param max_retries [Integer] How many times to retry a timed-out or failed GET, PUT or DELETE
+    #   (0 turns retries off). POST and PATCH requests are never retried.
     def initialize(
       api_key: nil,
       base_url: DEFAULT_BASE_URL,
       timeout: DEFAULT_TIMEOUT,
       open_timeout: DEFAULT_OPEN_TIMEOUT,
-      ssl_verify: DEFAULT_SSL_VERIFY
+      ssl_verify: DEFAULT_SSL_VERIFY,
+      max_retries: DEFAULT_MAX_RETRIES
     )
       @api_key = api_key
       @base_url = base_url
       @timeout = timeout
       @open_timeout = open_timeout
       @ssl_verify = ssl_verify
+      @max_retries = max_retries
     end
 
     # Check if the configuration has valid credentials
