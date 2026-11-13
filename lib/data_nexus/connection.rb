@@ -136,7 +136,7 @@ module DataNexus
     def extract_error_details(error)
       status = error.response&.dig(:status)
       body = parse_error_body(error.response&.dig(:body))
-      message = extract_error_message(body, error.message)
+      message = ErrorMessage.from(body, error.message)
 
       [status, body, message]
     end
@@ -160,17 +160,6 @@ module DataNexus
       JSON.parse(body, symbolize_names: true)
     rescue JSON::ParserError
       { raw_body: body }
-    end
-
-    # Extract a human-readable error message
-    #
-    # @param body [Hash, nil]
-    # @param default [String]
-    # @return [String]
-    def extract_error_message(body, default)
-      return default unless body.is_a?(Hash)
-
-      body[:error] || body[:message] || body[:errors]&.first || default
     end
   end
 end
