@@ -85,6 +85,8 @@ RSpec.describe DataNexus::Resources::Programs do
     end
 
     it 'raises UnprocessableEntityError on a 422 without the submitted values in its message' do
+      # The API's 422 for verify names the field and the rule but never echoes the value,
+      # so this checks that the gem doesn't add the submitted values itself.
       stub_verify(status: 422, body: { errors: [{ title: 'Invalid value', source: { pointer: '/born_on' },
                                                   detail: 'Invalid format. Expected :date' }] })
 
