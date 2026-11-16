@@ -6,6 +6,8 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-16
+
 ### Added
 
 - `client.programs('program-id').verify_member(first_name:, last_name:, born_on:, employee_id:)` checks whether a person is an eligible member of a program. It returns a hash with `:status` (`"verified"`, `"ineligible"`, `"not_found"` or `"multiple_matches"`) and `:member_id`, which is `nil` unless the status is `verified` or `ineligible`. A `nil` or blank field raises `ArgumentError` naming the field, before any request is sent. A 404 raises `DataNexus::NotFoundError` and is never reported as `not_found` ([sc-7485](https://app.shortcut.com/dart/story/7485)).
@@ -72,7 +74,8 @@ Tagged but not published to RubyGems. 0.2.0 was the first published version and 
 - `DataNexus::Collection` for cursor-paginated lists (`next_page`, `previous_page`, `each_page`, `each`).
 - Error classes for API errors (`AuthenticationError`, `NotFoundError`, `RateLimitError` and others) and connection errors.
 
-[Unreleased]: https://github.com/DartHealth/datanexus-ruby/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/DartHealth/datanexus-ruby/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/DartHealth/datanexus-ruby/compare/v0.2.1...v0.2.2
