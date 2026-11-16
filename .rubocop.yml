@@ -26,3 +26,4 @@ RSpec/MultipleMemoizedHelpers:
 Metrics/ParameterLists:
   Exclude:
     - "lib/data_nexus/client.rb"
+    - "lib/data_nexus/configuration.rb"

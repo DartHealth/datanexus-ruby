@@ -6,6 +6,11 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ## [Unreleased]
 
+### Added
+
+- `client.programs('program-id').verify_member(first_name:, last_name:, born_on:, employee_id:)` checks whether a person is an eligible member of a program. It returns a hash with `:status` (`"verified"`, `"ineligible"`, `"not_found"` or `"multiple_matches"`) and `:member_id`, which is `nil` unless the status is `verified` or `ineligible`. A `nil` or blank field raises `ArgumentError` naming the field, before any request is sent. A 404 raises `DataNexus::NotFoundError` and is never reported as `not_found` ([sc-7485](https://app.shortcut.com/dart/story/7485)).
+- `max_retries:` on `DataNexus::Client.new` and `DataNexus::Configuration.new` sets how many times a timed-out or failed GET, PUT or DELETE is retried. It defaults to 2, the number the gem always used, and `0` turns retries off. POST and PATCH requests are still never retried ([sc-7485](https://app.shortcut.com/dart/story/7485)).
+
 ## [0.4.0] - 2026-10-22
 
 ### Removed

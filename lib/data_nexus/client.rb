@@ -36,16 +36,21 @@ module DataNexus
     # @param base_url [String, nil] The base URL for the API
     # @param timeout [Integer, nil] Request timeout in seconds
     # @param open_timeout [Integer, nil] Connection open timeout in seconds
+    # @param ssl_verify [Boolean, nil] Whether to verify SSL certificates
+    # @param max_retries [Integer, nil] How many times to retry a timed-out or failed GET, PUT or DELETE
+    #   (default 2, 0 turns retries off). POST and PATCH requests are never retried.
     # @param config [Configuration, nil] A pre-built configuration object
     #
     # @raise [ConfigurationError] If no API key is provided
-    def initialize(api_key: nil, base_url: nil, timeout: nil, open_timeout: nil, ssl_verify: nil, config: nil)
+    def initialize(api_key: nil, base_url: nil, timeout: nil, open_timeout: nil, ssl_verify: nil, max_retries: nil,
+                   config: nil)
       @config = config || build_configuration(
         api_key: api_key,
         base_url: base_url,
         timeout: timeout,
         open_timeout: open_timeout,
-        ssl_verify: ssl_verify
+        ssl_verify: ssl_verify,
+        max_retries: max_retries
       )
 
       validate_configuration!
@@ -95,14 +100,16 @@ module DataNexus
     # @param timeout [Integer, nil]
     # @param open_timeout [Integer, nil]
     # @param ssl_verify [Boolean, nil]
+    # @param max_retries [Integer, nil]
     # @return [Configuration]
-    def build_configuration(api_key:, base_url:, timeout:, open_timeout:, ssl_verify:)
+    def build_configuration(api_key:, base_url:, timeout:, open_timeout:, ssl_verify:, max_retries:)
       Configuration.new(
         api_key: api_key,
         base_url: base_url || Configuration::DEFAULT_BASE_URL,
         timeout: timeout || Configuration::DEFAULT_TIMEOUT,
         open_timeout: open_timeout || Configuration::DEFAULT_OPEN_TIMEOUT,
-        ssl_verify: ssl_verify.nil? ? Configuration::DEFAULT_SSL_VERIFY : ssl_verify
+        ssl_verify: ssl_verify.nil? ? Configuration::DEFAULT_SSL_VERIFY : ssl_verify,
+        max_retries: max_retries || Configuration::DEFAULT_MAX_RETRIES
       )
     end
 
