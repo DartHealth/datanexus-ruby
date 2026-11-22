@@ -353,7 +353,7 @@ rescue DataNexus::UnprocessableEntityError => e
   when 'no_prevailing_sponsor_member'
     # The member has no sponsor membership to enroll under
   else
-    # code is nil: the attributes were inconsistent or the request was malformed
+    # Another code, or nil when the attributes were inconsistent or the request was malformed
     puts e.message
   end
 end

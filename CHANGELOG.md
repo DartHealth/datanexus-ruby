@@ -8,7 +8,7 @@ Dependency bumps, CI changes and test-only changes are left out. From 0.2.0 on, 
 
 ### Added
 
-- `UnprocessableEntityError#code` returns why an enrollment create failed: `no_prevailing_sponsor_member`, `program_not_found` or `not_eligible_for_program`. It is `nil` for other 422s, such as field or request validation errors. The README shows how to branch on it ([sc-6990](https://app.shortcut.com/dart/story/6990)).
+- `UnprocessableEntityError#code` returns the API's string reason code, such as `no_prevailing_sponsor_member`, `program_not_found` or `not_eligible_for_program`. It is `nil` when the response has no string code, such as field or request validation errors. The README shows how to branch on it ([sc-6990](https://app.shortcut.com/dart/story/6990)).
 
 ### Fixed
 
